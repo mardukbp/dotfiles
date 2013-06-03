@@ -1,0 +1,20 @@
+# bindings
+
+# ignore keys 
+bind index,pager \#   noop
+bind index i          noop
+
+#bind pager i          exit
+bind pager /          search
+bind pager <up>       previous-line
+bind pager <down>     next-line
+#bind pager gg         top
+#bind pager G          bottom
+#bind index K          previous-unread
+#bind index J          next-unread
+
+bind index,pager R    group-reply        #reply all?
+bind index <tab>      sync-mailbox
+bind index <space>    collapse-thread
+
+bind index,pager \Cs copy-message

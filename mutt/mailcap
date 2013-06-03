@@ -1,0 +1,21 @@
+#Word documents
+application/msword; ~/.mutt/view_attachment.sh %s "-" '/usr/bin/lowriter'
+
+# Images
+image/jpg; ~/.mutt/view_attachment.sh %s jpg
+image/jpeg; ~/.mutt/view_attachment.sh %s jpg
+image/pjpeg; ~/.mutt/view_attachment.sh %s jpg
+image/png; ~/.mutt/view_attachment.sh %s png
+image/gif; ~/.mutt/view_attachment.sh %s gif
+
+# PDFs
+application/pdf; ~/.mutt/view_attachment.sh %s pdf
+
+# HTML
+#text/html; ~/.mutt/view_html.py %s ; copiousoutput; compose=vim %s
+#text/html; w3m -F -dump -T text/html %s; nametemplate=%s.html; copiousoutput
+text/html; chromium %s; test=test -n "$DISPLAY"; needsterminal
+
+# Unidentified files
+application/octet-stream; ~/.mutt/view_attachment.sh %s "-"
+

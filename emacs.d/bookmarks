@@ -1,0 +1,60 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("Downloads"
+ (filename . "/media/Archivos/Downloads/")
+ (front-context-string . "Albums/\n  drwxr-")
+ (rear-context-string . "0K May 23 02:11 ")
+ (position . 114))
+("dotfiles"
+ (filename . "~/dotfiles/")
+ (front-context-string . "conkerorrc/\n  dr")
+ (rear-context-string . "0K May 22 22:41 ")
+ (position . 109))
+("Trash"
+ (filename . "~/.local/share/Trash/files/")
+ (front-context-string . "fotos_9193Mpm/\n ")
+ (rear-context-string . "0K Jul 17  2011 ")
+ (position . 125))
+("refcards"
+ (filename . "/usr/share/emacs/24.3/etc/refcards/")
+ (front-context-string . "calccard.pdf\n  -")
+ (rear-context-string . "2K Jan  2 20:05 ")
+ (position . 205))
+("tesis"
+ (filename . "/media/Archivos/Documents/Archivos/UNAM/Maestría/Tesis_QT/")
+ (front-context-string . "Computational Me")
+ (rear-context-string . "0K Dec 30 11:23 ")
+ (position . 147))
+("org"
+ (filename . "/media/Archivos/Documents/org")
+ (front-context-string . "arch.txt\n  -rw-r")
+ (rear-context-string . "4K Jul 11  2012 ")
+ (position . 148))
+("todo"
+ (filename . "/media/Archivos/Documents/org/cal.org")
+ (front-context-string . "* TODOs\n\n** UNAM")
+ (rear-context-string)
+ (position . 1))
+("home"
+ (filename . "~/")
+ (front-context-string . "Anki/\n  drwxr-xr")
+ (rear-context-string . "0K Apr 13 21:16 ")
+ (position . 102))
+("bashrc"
+ (filename . "~/.bashrc")
+ (front-context-string . "#\n# ~/.bashrc\n#\n")
+ (rear-context-string)
+ (position . 1))
+("media"
+ (filename . "/media/")
+ (front-context-string . "Archivos/\n  drwx")
+ (rear-context-string . "2K May  1 12:57 ")
+ (position . 95))
+("Archivos"
+ (filename . "/media/Archivos/Documents/Archivos/")
+ (front-context-string . "  /media/Archivo")
+ (rear-context-string)
+ (position . 1))
+)

@@ -1,0 +1,13 @@
+# Before sourcing any account dedicated file
+source "/usr/bin/gpg2 --no-tty -dq ~/private/gpg_keys/my-pwds.gpg |"
+
+# account-specific sources
+source ~/private/mutt/icloud.muttrc
+source ~/private/mutt/fciencias.muttrc
+source ~/private/mutt/gmail.muttrc
+source ~/private/mutt/icn.muttrc
+
+folder-hook iCloud/*        source ~/private/mutt/icloud.muttrc
+folder-hook FCiencias/*     source ~/private/mutt/fciencias.muttrc
+folder-hook Gmail/*         source ~/private/mutt/gmail.muttrc
+folder-hook ICN/*           source ~/private/mutt/icn.muttrc

@@ -1,0 +1,21 @@
+background yes
+font FreeSans:style=bold:size=11
+xftfont FreeSans:style=bold:size=11
+use_xft yes
+own_window yes
+own_window_transparent yes
+own_window_type override
+on_bottom yes
+#own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+minimum_size 220 400
+maximum_width 350
+default_color d7d7d7
+#default_outline_color black
+alignment top_left
+double_buffer yes
+
+TEXT
+#${execp ./org-conky-parser.scm 30}
+#${exec emacs -batch -l ~/.emacs -eval '(org-batch-agenda "a" \
+			 org-agenda-span (quote day))' 2> /dev/null}
+${exec cat /media/Archivos/Documents/org/agenda}

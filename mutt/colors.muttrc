@@ -1,0 +1,26 @@
+# Color messages with attachments diferently
+#color index blue black "~X 1-"
+
+# Color Sender
+color header cyan black ^From:
+
+# Color quoted text
+color quoted magenta black
+
+# Color URLs
+color body brightblue black (https?|ftp)(://)[\-\.,/%~_:?&=\#a-zA-Z0-9]+
+
+# Color domain name
+
+# Color IP Address
+
+# Color email addresses
+color body	brightred black [\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+
+
+# Flagged Messages are important!
+color index brightred black "~F"
+
+# Highlight new messages
+color index brightyellow black ~N
+
+color tree brightmagenta default             # color thread tree

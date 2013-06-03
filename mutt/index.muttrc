@@ -1,0 +1,17 @@
+# index options
+set sort             = threads
+set strict_threads                           # don't thread messages by subject
+set sort_aux         = reverse-last-date-received
+set collapse_unread  = no
+set uncollapse_jump                          # don't collapse on an unread message
+set sort_re                                  # thread based on regex
+set reply_regexp     = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+folder-hook . "push <collapse-all>"          # threads collapsed by default 
+
+# formats
+set locale           = "es_MX.utf8"
+set date_format      = "%a %d %b %Y %I:%M %P"
+# If msg has attachments show [+] else insert spaces for padding
+# msg no. | attach | flags | thread | date | size | from | subject
+set index_format     = "%3C %?X?[+]&   ? %Z %?M?+& ? %D   (%-4.4c)   %-26.24F %s"
+set to_chars = ""                            # Characters used to indicate mail addressed to you. I don't care.

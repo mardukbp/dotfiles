@@ -1,0 +1,34 @@
+" set up syntax highlighting for my email  
+autocmd BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,/media/Archivos/mutt/temp/mutt* :set ft=mail
+
+" Some tricks for mutt
+" F1 through F3 re-wraps paragraphs in useful ways
+"augroup MUTT
+"	au BufRead ~/.mutt/temp/mutt* set spell " <-- vim 7 required
+"	au BufRead ~/.mutt/temp/mutt* nmap  <F1>  gqap
+"	au BufRead ~/.mutt/temp/mutt* nmap  <F2>  gqqj
+"	au BufRead ~/.mutt/temp/mutt* nmap  <F3>  kgqj
+"	au BufRead ~/.mutt/temp/mutt* map!  <F1>  <ESC>gqapi
+"	au BufRead ~/.mutt/temp/mutt* map!  <F2>  <ESC>gqqji
+"	au BufRead ~/.mutt/temp/mutt* map!  <F3>  <ESC>kgqji
+"augroup END
+
+setlocal spell spelllang=es
+
+" Check missing attachments when composing
+let g:attach_check_keywords = 'envío,mando,adjunto,attached'
+
+" mutt: insert attachment 
+fun! RangerMuttAttach()
+    silent !ranger --choosefile=/tmp/chosenfile
+    if filereadable('/tmp/chosenfile')
+      "call system('sed "s/\(.*\)/Attach: \1/" /tmp/chosenfile > /tmp/muttattach')
+      call system('sed "s/[[:space:]]/\\\ /g" /tmp/chosenfile | sed "s/\(.*\)/Attach: \1/" > /tmp/muttattach')
+      exec 'read /tmp/muttattach'
+      call system('rm /tmp/chosenfile /tmp/muttattach')
+    endif
+    redraw!
+endfun
+
+map <C-A> magg/Reply-To<CR><ESC>:call RangerMuttAttach()<CR>`a
+

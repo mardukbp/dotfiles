@@ -1,0 +1,9 @@
+# Sidebar Patch
+set sidebar_delim   = '  |'
+set sidebar_visible = yes
+set sidebar_width   = 28
+color sidebar_new yellow default
+
+bind index,pager j sidebar-prev
+bind index,pager k sidebar-next
+bind index,pager h sidebar-open

@@ -1,0 +1,24 @@
+# pager options
+set pager_index_lines = 10                   # number of lines to show
+set pager_context     = 5                    # number of context lines to show
+set pager_stop                               # don't go to next message automatically
+set menu_scroll                              # scroll in menus
+set smart_wrap                               # don't split words
+set tilde                                    # show tildes like vim
+unset markers                                # no ugly plus signs
+alternative_order text/plain text/enriched text/html
+set quote_regexp     = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+
+# headers to show
+ignore *
+unignore from: to: cc: date: subject:
+hdr_order from: to: cc: date: subject:
+
+# Attachments
+set mailcap_path     = ~/.mutt/mailcap        # entries for filetypes
+bind attach <return> view-mailcap             # View attachments properly
+auto_view text/html                          # view html automatically
+
+# Get mail-to-filter from http://www.spocom.com/users/gjohnson/mutt/
+set display_filter = ~/.mutt/mail-to-filter # Hide Long To: and Cc: lists
+

@@ -1,0 +1,15 @@
+# composing mail
+set realname         = "Marduk Bolaños"
+set envelope_from                           # which from?
+set edit_headers                            # show headers when composing
+set fast_reply                              # skip to compose when replying
+set fcc_attach                              # save attachments with the body
+unset mime_forward                          # forward attachments as part of body
+set forward_format   = "Rv: %s"
+set forward_decode
+set attribution      = "El %d, %n escribió:"
+set reply_to
+set reverse_name                            # reply as whomever it was to
+set forward_quote                           # include message in forwards
+set include          = no                   # do not include org. message in reply
+
