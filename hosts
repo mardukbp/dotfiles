@@ -1,0 +1,18 @@
+#
+# /etc/hosts: static lookup table for host names
+#
+
+#<ip-address>	<hostname.domain.org>	<hostname>
+127.0.0.1	localhost.localdomain	localhost
+#::1		localhost.localdomain	localhost
+127.0.0.1	Archnovo
+# End of file
+
+127.0.0.1	clkads.com
+127.0.0.1	adserving.cpxinteractive.com
+127.0.0.1	ad.z5x.net
+127.0.0.1	ad.xtendmedia.com
+127.0.0.1       www.facebook.com
+127.0.0.1       pagead2.googlesyndication.com
+127.0.0.1       a.tribalfusion.com
+127.0.0.1       static.exoclick.com

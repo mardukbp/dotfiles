@@ -35,9 +35,17 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-(global-set-key "\C-cc" 'org-capture)
+(global-set-key (kbd "<f1>") 'org-capture)
+;;(global-set-key "\C-cc" 'org-capture)
 ;(setq org-log-done t)
 ;(setq org-src-fontify-natively t)
+
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "8") '(lambda () (interactive) (insert "*")))
+
+	    (local-set-key (kbd "*") '(lambda () (interactive) (insert "8")))
+))
 
 ;;}}}
 
@@ -53,19 +61,63 @@
      ("b" "Bookmarks" entry
       (file+headline (concat org-directory "bookmarks.org") "Bookmarks")
       "* %^{Title}\n\n  Source: %u, %c\n\n  %i")
-     
-     ("t" "ToDo" entry
-      (file+headline (concat org-directory "gtd.org") "Tasks" )
-      "* TODO %?\n %i\n")
 
-     ("e" "Events" entry
-      (file+headline (concat org-directory "gtd.org") "Events" )
+;;{{{ GTD
+  
+     ("p" "Pendientes")
+
+     ("pu" "Pendientes/UNAM" entry
+      (file+headline (concat org-directory "gtd.org") "UNAM" )
+      "* %?\n %i\n")
+
+     ("pc" "Pendientes/Compu" entry
+      (file+headline (concat org-directory "gtd.org") "Compu" )
+      "* %?\n %i\n")
+
+     ("po" "Pendientes/Otros" entry
+      (file+headline (concat org-directory "gtd.org") "Otros" )
+      "* %?\n %i\n")
+
+     ("ps" "Pendientes/Salud" entry
+      (file+headline (concat org-directory "gtd.org") "Salud" )
+      "* %?\n %i\n")
+
+     ("g" "GTD")
+
+     ("ge" "Eventos" entry
+      (file+headline (concat org-directory "gtd.org") "Eventos" )
       "* %?\n %i\n")
      
+     ("gb" "Compras" entry
+      (file+headline (concat org-directory "gtd.org") "Compras" )
+      "* TODO %?\n %i\n")
+
+     ("gr" "Reuniones" entry
+      (file+headline (concat org-directory "gtd.org") "Reuniones" )
+      "* %?\n %i\n")
+
+     ("gd" "Deudas" entry
+      (file+headline (concat org-directory "gtd.org") "Deudas" )
+      "* %?\n %i\n")
+
+     ("gp" "Proyectos" entry
+      (file+headline (concat org-directory "gtd.org") "Proyectos" )
+      "* %?\n %i\n")
+
+     ("gc" "Cumpleaños" entry
+      (file+headline (concat org-directory "gtd.org") "Cumpleaños" )
+      "* TODO %?\n %i\n")
+
+;;}}}
+
      ("k" "Kurzweil" entry
       (file+headline (concat org-directory "science+tech.org") "Kurzweil" )
       "* %?\n %i\n")
      
+     ("f" "Física" entry
+      (file+headline (concat org-directory "fisica.org") "Física" )
+      "* %?\n %i\n")
+
      ("p" "PhysOrg" entry
       (file+headline (concat org-directory "science+tech.org") "PhysOrg" )
       "* %?\n %i\n")
@@ -86,10 +138,35 @@
       (file+headline (concat org-directory "libros.org") "Libros" )
       "* %?\n %i\n")
 
-     ("a" "Articulos" entry
-      (file+headline (concat org-directory "articulos.org") "Articulos" )
+     ("a" "Artículos" entry
+      (file+headline (concat org-directory "articulos.org") "Artículos" )
       "* %?\n %i\n")
 
+     ("s" "Salud" entry
+      (file+headline (concat org-directory "salud.org") "Salud" )
+      "* %?\n %i\n")
+
+     ("d" "Docencia")
+
+     ("dc" "Curso de computación" entry
+      (file+headline (concat org-directory "docencia.org") "Computación" )
+      "* %?\n %i\n")
+
+;;{{{ Wiki
+
+     ;;("w" "wiki")
+
+     ("w" "Wiki" entry
+      (file+headline (concat org-directory "wiki.org") "Wiki" )
+      "* %?\n %i\n")
+
+;;}}}
+     
+     ;; ("em" "Emacs commands" table-line
+     ;;  (file+headline (concat org-directory "emacs-refcard.org") "" )
+     ;;  "* %?\n %i\n")
+
+     
    )
 )
 

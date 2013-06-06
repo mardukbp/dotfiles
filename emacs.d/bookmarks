@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Downloads"
+(("org-capture-last-stored"
+ (filename . "/media/Archivos/Documents/org/gtd.org")
+ (front-context-string . "*** Configurar ~")
+ (rear-context-string . "wiki a org-mode\n")
+ (position . 3837))
+("Downloads"
  (filename . "/media/Archivos/Downloads/")
  (front-context-string . "Albums/\n  drwxr-")
  (rear-context-string . "0K May 23 02:11 ")
@@ -33,7 +38,7 @@
  (rear-context-string . "4K Jul 11  2012 ")
  (position . 148))
 ("todo"
- (filename . "/media/Archivos/Documents/org/cal.org")
+ (filename . "/media/Archivos/Documents/org/gtd.org")
  (front-context-string . "* TODOs\n\n** UNAM")
  (rear-context-string)
  (position . 1))

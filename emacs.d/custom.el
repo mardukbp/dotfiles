@@ -7,7 +7,7 @@
  '(TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "zathura") (output-html "xdg-open"))))
  '(dired-isearch-filenames t)
  '(dired-listing-switches "-laghop --group-directories-first")
- '(org-agenda-files (quote ("/media/Archivos/Documents/org/cal.org")))
+ '(org-agenda-files (quote ("/media/Archivos/Documents/org/gtd.org")))
  '(org-agenda-prefix-format (quote ((agenda . " %?-12t") (timeline . "  % s") (todo . " %i %-12:c") (tags . " %i %-12:c") (search . " %i %-12:c"))))
  '(org-agenda-remove-tags t)
  '(org-agenda-start-on-weekday 0)

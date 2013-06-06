@@ -49,7 +49,7 @@ alias vimrc='vim ~/.vimrc'
 alias ranrc='vim ~/.config/ranger/rc.conf'
 alias hosts='sudo emacsclient -c /etc/hosts'
 
-alias pacman='sudo pacman'
+#alias pacman='sudo pacman'
 alias pacup='sudo pacman -Syu '
 
 alias aurin='pacaur -S '
@@ -60,6 +60,7 @@ alias texup='sudo tlmgr update --all'
 
 alias pdfxv='wine ~/.wine/drive_c/Program\ Files/Tracker\ Software/PDF\ Viewer/PDFXCview.exe' 
 
+alias emacsd='(emacs --daemon &)'
 
 # }}}
 
@@ -166,4 +167,4 @@ loc8() {
 source ~/private/icn
 
 encpdf () { pdftk "$1" cat output "$2" user_pw "$3"; }
-
+pacinfo () { pacman -Qi "$1" | less; }

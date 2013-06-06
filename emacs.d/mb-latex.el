@@ -2,6 +2,12 @@
 ;; LaTeX
 ;;====================
 
+;; Preview LaTeX
+(load "preview-latex.el" nil t t)
+
+;; Fold mode
+(add-hook 'LaTeX-mode-hook 'TeX-fold-mode)
+
 ;;{{{ Compile LaTeX
 ;; --------------
 
@@ -19,14 +25,66 @@
 
 ;;}}}
 
+;;{{{ RefTeX
+
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
+(setq reftex-plug-into-auctex t)
+
+;; source: http://ergoemacs.org/emacs/modernization_mark-word.html
+(defun select-text-in-quote ()
+  "Select text between the nearest left and right delimiters.
+Delimiters are paired characters:
+ () [] {} «» ‹› “” 〖〗 【】 「」 『』 （） 〈〉 《》 〔〕 ⦗⦘ 〘〙 ⦅⦆ 〚〛 ⦃⦄
+ For practical purposes, also: \"\", but not single quotes."
+ (interactive)
+ (let (start end)
+   (skip-chars-backward "^<>([{“「『‹«（〈《〔【〖⦗〘⦅〚⦃\"")
+   (setq start (point))
+   (skip-chars-forward "^<>)]}”」』›»）〉》〕】〗⦘〙⦆〛⦄\"")
+   (setq end (point))
+   (buffer-substring-no-properties start end)
+   )
+ )
+
+;; Source: http://permalink.gmane.org/gmane.emacs.auctex.devel/2757
+
+;; given a key and a field name return the value of that entry's field.
+(defun reftex-get-data (key data)
+  (let* ((files (reftex-get-bibfile-list))
+	 (entry (condition-case nil
+		    (save-excursion
+		      (reftex-pop-to-bibtex-entry key files nil nil nil t))
+		  (error
+		   (if files
+		       (message "cite: no such database entry: %s" key)
+		     (message "%s" (substitute-command-keys
+				    (format reftex-no-info-message "cite"))))
+		   nil))))
+    (when entry
+      (cdr (assoc data (reftex-parse-bibtex-entry entry))))))
+
+;; Open file at point in \cite{...}
+(defun reftex-open-file ()
+  (interactive)
+  (let ((file (reftex-get-data (select-text-in-quote) "file")))
+    (when file
+      (let ((name (concat "" (save-match-data
+				(string-match ":\\(.*\\):" file)
+				(match-string 1 file)))))
+	(call-process-shell-command "zathura" nil nil nil (concat "\"" name "\"" ))))))
+
+;;}}}
+
+;; Auto-reload document in order get support for packages
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+
 ;;(setq TeX-electric-sub-and-superscript t) 
 
 ;; enable LaTeX-math-mode by default
 ;;(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-;; Activate RefTeX
-;;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;;(setq reftex-plug-into-auctex t)
+
 
 ;; Spellcheck on the fly
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -43,6 +101,26 @@
 
 ;;(load-file (expand-file-name "tex/xetex-symbols-keymap.el" user-emacs-directory))
 ;;(load-file (expand-file-name "tex/xetex-greek-keymap.el" user-emacs-directory))
+
+(add-hook 'LaTeX-mode-hook
+          (lambda () 
+	    (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
+	    (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
+	    (local-set-key (kbd "6") '(lambda () (interactive) (insert "^")))
+	    (local-set-key (kbd "7") '(lambda () (interactive) (insert "&")))
+	    (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
+	    (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
+	    (local-set-key (kbd "=") '(lambda () (interactive) (insert "+")))
+
+	    (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
+	    (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
+	    (local-set-key (kbd "^") '(lambda () (interactive) (insert "6")))
+	    (local-set-key (kbd "&") '(lambda () (interactive) (insert "7")))
+	    (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
+	    (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
+	    (local-set-key (kbd "+") '(lambda () (interactive) (insert "=")))
+
+))
 
 ;; modify bindings for math mode
 ;; ------------------------------

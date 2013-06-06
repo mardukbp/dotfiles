@@ -35,8 +35,18 @@
 
 ;; Themes
 ;; -------
-(add-to-list 'custom-theme-load-path (expand-file-name "themes" site-lisp-dir))
-(load-theme 'zenburn t)
+
+;; color-theme package
+(color-theme-initialize)
+(color-theme-goldenrod)
+;;(color-theme-lethe)
+
+;;
+;;(add-to-list 'custom-theme-load-path (expand-file-name "underwater-theme.el" themes-dir))
+
+;;(load-theme 'underwater t)
+
+;;(load-theme 'zenburn t)
 ;(load-theme 'blackboard t)
 ;(load-theme 'tangotango t)
 
@@ -50,6 +60,15 @@
 ;;(global-set-key (kbd "<f1>") 'save-buffer)
 (global-set-key (kbd "C-;") 'isearch-forward)
 (define-key isearch-mode-map (kbd "C-;") 'isearch-repeat-forward)
+
+(add-hook 'emacs-lisp-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
+	    (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
+
+	    (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
+	    (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
+))
 
 ;;}}}
 

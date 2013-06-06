@@ -4,9 +4,13 @@
 // Shortcuts
 webjumps.g = webjumps.google;
 
+// Zotero
+
+define_webjump("zotero","javascript:var%20d=document,s=d.createElement('script');s.src='https://www.zotero.org/bookmarklet/loader.js';(d.body?d.body:d.documentElement).appendChild(s);void(0);");
+
 // Print friendly 
 // www.printfriendly.com/‎
-define_webjump("pdf","javascript:(function(){if(window['priFri']){window.print()}else{var pfurl='';pfstyle='nbk';pfBkVersion='1';if(window.location.href.match(/https/)){pfurl='https://pf-cdn.printfriendly.com/ssl/main.js'}else{pfurl='http://cdn.printfriendly.com/printfriendly.js'}_pnicer_script=document.createElement('SCRIPT');_pnicer_script.type='text/javascript';_pnicer_script.src=pfurl + '?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_pnicer_script);}})();")
+define_webjump("pdf","javascript:(function(){if(window['priFri']){window.print()}else{var pfurl='';pfstyle='nbk';pfBkVersion='1';if(window.location.href.match(/https/)){pfurl='https://pf-cdn.printfriendly.com/ssl/main.js'}else{pfurl='http://cdn.printfriendly.com/printfriendly.js'}_pnicer_script=document.createElement('SCRIPT');_pnicer_script.type='text/javascript';_pnicer_script.src=pfurl + '?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_pnicer_script);}})();");
 
 define_webjump("imdb", "http://www.imdb.com/find?s=all&q=%s");
 

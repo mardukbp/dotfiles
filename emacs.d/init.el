@@ -14,8 +14,12 @@
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
 
+(setq themes-dir
+      (expand-file-name "themes" site-lisp-dir))
+
 (add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
+(add-to-list 'custom-theme-load-path themes-dir)
 
 ;; Relocate customizations
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))

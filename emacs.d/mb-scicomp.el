@@ -3,7 +3,8 @@
 (require 'ein)
 
 (defun run-python2 () (interactive) (run-python "/usr/bin/python2"));; necessary for auto-completion
-(defun run-ipython () (interactive) (async-shell-command "ipython notebook --pylab inline --notebook-dir=~/pynb"))
+
+(defun run-ipython () (interactive) (async-shell-command "ipython notebook --pylab inline --notebook-dir=/media/Archivos/Documents/pynb"))
 (defun pynb ()
   (interactive)
   (run-python2)

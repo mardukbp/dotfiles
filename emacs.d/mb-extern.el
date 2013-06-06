@@ -1,3 +1,10 @@
+;;{{{ Auto Complete
+
+(require 'auto-complete)
+(add-hook 'emacs-lisp-mode-hook 'auto-complete-mode)
+
+;;}}}
+
 ;;{{{ BBDB
 
 (require 'bbdb)
@@ -14,6 +21,7 @@
 ;;}}}
 
 ;;{{{ bibretrieve
+
 ;; https://github.com/pzorin/bibretrieve
 
 (add-to-list 'load-path (expand-file-name "bibretrieve" site-lisp-dir))
@@ -51,17 +59,24 @@
   (setq mm-url-use-external nil)
 )
 
-;;}}}
+(defun bibretrieve-calibre-create-url (author title)
 
-;;{{{ Calibre
-;; https://github.com/whacked/calibre-mode
+  (let ((tempfile (make-temp-file "calibre" nil ".bib")))
 
-(add-to-list 'load-path (expand-file-name "calibre-mode" site-lisp-dir))
+    (call-process-shell-command "calibredb" nil nil nil 
+				"catalog" tempfile "-s"
+				(if (> (length author) 0) (concat "authors:" "\"" author "\""))
+				(if (> (length title) 0)  (concat "title:" "\"" title "\"")))
+    (concat "file://" tempfile)
+))
 
-(require 'calibre-mode)
-(setq sql-sqlite-program "/usr/bin/sqlite3")
-(setq calibre-root-dir (expand-file-name "/media/Archivos/Documents/Calibre Library/"))
-(setq calibre-db (concat calibre-root-dir "metadata.db"))
+(defun bibretrieve-calibre ()
+  (interactive)
+  (setq mm-url-use-external t)
+  (setq bibretrieve-backends '(("calibre" . 5)))
+  (bibretrieve)
+  (setq mm-url-use-external nil)
+)
 
 ;;}}}
 
@@ -112,6 +127,13 @@
 
 (require 'helm-config)
 (helm-mode 1)
+
+;; Disable helm for this commands
+(add-to-list 'helm-completing-read-handlers-alist '(dired-create-directory . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(LaTeX-environment . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(TeX-insert-macro . nil))
 
 (global-set-key (kbd "C-SPC")
   (lambda() (interactive)
@@ -386,17 +408,13 @@
 
 ;;}}}
 
-;;{{{ Zotero
-
-;; zotero-plain
-;; https://bitbucket.org/egh/zotero-plain/overview
-
-;; (add-to-list 'load-path (expand-file-name "zot4rst" site-lisp-dir))
-
-;;(autoload 'org-zotero-mode "org-zotero" "" t)
-
-;; zotelo: manage Zotero collections from emacs
+;;{{{ Zotelo
 ;; https://github.com/vitoshka/zotelo
+
+(add-to-list 'load-path (expand-file-name "zotelo" site-lisp-dir))
+
+(require 'zotelo)
+(add-hook 'TeX-mode-hook 'zotelo-minor-mode)
 
 ;;}}}
 
