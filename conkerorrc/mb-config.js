@@ -37,6 +37,10 @@ interactive("cache-clear",
 
 // }}}
 
+// Key-kill-mode - Attempt to fix tab completion in iPython Notebook
+require("key-kill");
+key_kill_mode.test.push(build_url_regexp($domain = "localhost"));
+
 // {{{ Buffers
 
 // Open external url links in new buffer
@@ -59,6 +63,11 @@ interactive("cache-clear",
 
 //user_pref("general.useragent.override", "Mozilla/5.0 (X11; Linux i686; rv:13.0) Gecko/20100101 Firefox/13.0.1");
 
+// Allow access to file:/// URIs
+user_pref("capability.policy.policynames", "localfilelinks");
+user_pref("capability.policy.localfilelinks.sites", "http://localhost:4000");
+user_pref("capability.policy.localfilelinks.checkloaduri.enabled", "allAccess");
+
 // user_pref("keyword.enabled", true);
 // user_pref("keyword.URL", "http://www.google.com/search?ie=UTF-8&oe=utf-8&q=");
 
@@ -74,6 +83,8 @@ wikipedia_enable_didyoumean = true;
 
 require("page-modes/google-search-results.js");
 google_search_bind_number_shortcuts();
+
+require("page-modes/duckduckgo.js");
 
 // }}}
 

@@ -23,11 +23,11 @@
 (global-set-key [f2] 'mu4e)
 
 ;; Get mail but do not sync maildirs
-(global-set-key (kbd "<f12>")
-		(lambda ()
-		  (interactive)
-		  (save-window-excursion
-		    (shell-command "offlineimap -qf INBOX &"))))
+;; (global-set-key (kbd "<f12>")
+;; 		(lambda ()
+;; 		  (interactive)
+;; 		  (save-window-excursion
+;; 		    (shell-command "offlineimap -qf INBOX &"))))
 
 
 ;; Shortcuts
@@ -43,8 +43,8 @@
 
 ;;{{{ Variables
 (setq 
-  mu4e-mu-home "/media/Archivos/mail/mu" ;; Where is the index?
-  mu4e-maildir "/media/Archivos/mail/Maildirs" 
+  mu4e-mu-home "~/Personal/mail/mu" ;; Where is the index?
+  mu4e-maildir "~/Personal/mail/Maildirs" 
   mu4e-get-mail-command "offlineimap" ;; Get mail with S-u
   ;;mu4e-update-interval 300 ;; update every 5 mins
   
@@ -67,6 +67,7 @@
        '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
           ("date:today..now"                  "Today's messages"     ?t)
           ("date:1d..now"                     "Last 2 days"          ?r)
+	  ("flag:flagged"                     "Flagged messages"     ?f)
 	)
 )
 
@@ -117,7 +118,7 @@
 
 (setq
   mu4e-headers-date-format "%d/%b/%Y %H:%M"
-  mu4e-attachment-dir "/media/Archivos/temp"
+  mu4e-attachment-dir "~/Downloads/temp"
 )
 
 ;; fields to show in message view
@@ -144,6 +145,31 @@
 ;;}}}
 
 ;;{{{ Sending mail
+
+;; while mu4e doesn't have this feature, from
+;; https://groups.google.com/group/mu-discuss/browse_thread/thread/551b7a6487a0aeb3
+(defun jmg/ido-select-recipient ()
+  "Inserts a contact from the mu cache.
+Uses ido to select the contact from all those present in the database."
+  (interactive)
+  (insert
+   (ido-completing-read
+    "Recipient: "
+    (mapcar
+     (lambda (contact-string)
+       (let* ((data (split-string contact-string ","))
+              (name (when (> (length (car data)) 0)
+                      (car data)))
+              (address (cadr data)))
+         (if name
+             (format "%s <%s>" name address)
+           address)))
+     (remove-if (lambda (string) (= 0 (length string)))
+                (split-string (shell-command-to-string "mu cfind --muhome ~/Personal/mail/mu --format=csv")
+                              "\n"))))))
+
+(define-key message-mode-map (kbd "C-c C-f c") 'jmg/ido-select-recipient)
+
 (setq message-send-mail-function 'message-send-mail-with-sendmail
       sendmail-program "/usr/bin/msmtp"
       user-full-name "Marduk Bolaños"
@@ -213,7 +239,7 @@
 
 ;;{{{ Private info
 
-(add-to-list 'load-path "~/private")
+(add-to-list 'load-path "~/Personal/private")
 
 (require 'mu4e-private)
 

@@ -1,48 +1,40 @@
 " Runtime Path
 set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
 
-set autoindent
+" enable filetype plugin and indentation
+filetype plugin indent on
+
+"set autoindent
 set tabstop=4
+set softtabstop=4
+set smarttab
+set expandtab
 set shiftwidth=4
+
 set incsearch
 set autoread
+
 set ignorecase
 syntax enable
 set encoding=utf8
 set wrap
-colorscheme breeze
+
+colorscheme mustang
+"colorscheme vividchalk
+"colorscheme breeze
 set keymap=accents
+
+set foldmethod=marker
 
 set guifont=Consolas\ 14
 
 " Show line numbers
-set number
+" set number
 
 " Tab completion
 set wildmode=longest,list,full
 set wildmenu
 set wildignorecase
-
-" vim-latexsuite
-
-" Load LaTeX-Suite when a .tex file is opened
-filetype plugin indent on
-
-set grepprg=grep\ -nH\ $*
-
-" LaTeX looks good with just a bit of indentation
-set sw=2
-
-let g:Tex_DefaultTargetFormat = 'pdf'
-let g:Tex_ViewRule_pdf = 'zathura'
-
-
-" Spell check
-autocmd BufNewFile,BufRead *.tex setlocal spell spelllang=en
-"autocmd BufNewFile,BufRead *.tex setlocal spell spelllang=es
-
-:map <F5> :setlocal spell! spelllang=en<CR>
-:map <F6> :setlocal spell! spelllang=es<CR>
 
 " Status line
 
@@ -78,7 +70,7 @@ nmap <C-Up> kly$jp
 map <leader>j :wincmd j<CR>
 map <leader>k :wincmd k<CR>
 
-" Don't wait for O
+" Don't wait for shift-o
 " http://shallowsky.com/blog/linux/editors/vim-opening-lines.html
 set ttimeoutlen=100
 
@@ -86,5 +78,5 @@ set ttimeoutlen=100
 set pastetoggle=<F2>
 
 " Cursor movement like bash
-map <C-e> <End>
-map <C-a> <Home>
+imap <C-e> <End>
+imap <C-a> <Home>

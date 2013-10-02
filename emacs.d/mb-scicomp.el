@@ -1,17 +1,24 @@
 ;; Emacs iPython Notebook
 ;; ------------------------
-(require 'ein)
+;;(require 'ein)
 
-(defun run-python2 () (interactive) (run-python "/usr/bin/python2"));; necessary for auto-completion
+(defun run-python2 () (interactive) (run-python "/usr/bin/python2")) ;; necessary for auto-completion
 
-(defun run-ipython () (interactive) (async-shell-command "ipython notebook --pylab inline --notebook-dir=/media/Archivos/Documents/pynb"))
-(defun pynb ()
+(defun pynb-tesis ()
   (interactive)
   (run-python2)
-  (run-ipython)
+  (async-shell-command "ipython notebook --pylab inline --profile=tesis")
   (delete-other-windows)
 )
 
+(defun pynb-default ()
+  (interactive)
+  (run-python2)
+  (async-shell-command "ipython notebook --pylab inline --profile=default")
+  (delete-other-windows)
+)
+
+;; open notebook list with a separate function because waiting time for the server is variable
 (defun ein ()
   (interactive)
   (ein:notebooklist-open nil)

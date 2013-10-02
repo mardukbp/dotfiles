@@ -47,7 +47,7 @@ editor_cmd = terminal .. " -e " .. editor
 
 mutt = terminal .. " -ls +sb -e mutt"
 emacs = "emacsclient -c"
-pomodoro = "adobe-air /home/marduk/focus_booster.air"
+pomodoro = "adobe-air /home/marduk/bin/focus_booster.air"
 conkeror = "conkeror"
 
 -- Default modkey.
@@ -108,7 +108,7 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-									{ "Chromium", "chromium"},
+									{ "Firefox", "firefox"},
                                     { "open terminal", terminal }
                                   }
                         })
@@ -227,6 +227,7 @@ globalkeys = awful.util.table.join(
 	awful.key({modkey            }, "w", function() awful.util.spawn(conkeror) end),
 	awful.key({modkey            }, "r", function() awful.util.spawn(pomodoro) end),
 	awful.key({modkey            }, "e", function() awful.util.spawn(emacs) end),
+	awful.key({}, "Print", function() awful.util.spawn("scrshot.sh", false) end),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -419,6 +420,8 @@ awful.rules.rules = {
 				     size_hints_honor = false} },
 					 
     { rule = { class = "Adl" },
+      properties = { floating = true, tag = tags[1][9] } },
+    { rule = { class = "JabRef" },
       properties = { floating = true, tag = tags[1][9] } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },

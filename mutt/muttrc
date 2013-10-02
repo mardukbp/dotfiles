@@ -1,7 +1,7 @@
 # directories
-set header_cache     = /media/Archivos/mail/mutt/cache/headers
-set message_cachedir = /media/Archivos/mail/mutt/cache/bodies
-set tmpdir           = /media/Archivos/mail/mutt/temp
+set header_cache     = ~/mail/mutt/cache/headers
+set message_cachedir = ~/mail/mutt/cache/bodies
+set tmpdir           = ~/mail/mutt/temp
 
 # External programs
 set editor           = "/usr/bin/vim -f +/^$ ++1 -S ~/.mutt/vimrc_mutt"   # skip to first blank line
@@ -10,7 +10,7 @@ set query_command    = "lbdbq '%s'"          # Query lbdb for addresses
 # main options
 set wait_key         = no                    # shut up, mutt
 set mbox_type        = Maildir
-set folder           = /media/Archivos/mail/Maildirs
+set folder           = ~/mail/Maildirs
 set spoolfile        = "+iCloud/INBOX"       # default inbox
 set timeout          = 3                     # idle time before scanning
 set mail_check       = 0					 # min. time btw. scans
@@ -27,7 +27,7 @@ set status_chars  = " *%A"
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"  
 
 # Aliases
-set alias_file = /media/Archivos/mail/mutt/aliases
+set alias_file = ~/mail/mutt/aliases
 
 # always sourced
 source ~/.mutt/colors.muttrc
@@ -38,5 +38,5 @@ source ~/.mutt/index.muttrc
 source ~/.mutt/pager.muttrc
 source ~/.mutt/compose.muttrc
 source ~/.mutt/accounts.muttrc
-source /media/Archivos/mail/mutt/aliases
+source ~/mail/mutt/aliases
 

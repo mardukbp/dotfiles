@@ -7,19 +7,22 @@
 
 # {{{ Prompt
 
-PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0;93m\] '
+PS1='\[\e[38;5;103m\][\u@\h \W]\$\[\e[0;93m\] '
 
 # Different colors for text entry and console output
 trap 'echo -ne "\e[0m"' DEBUG
 
 # }}}
 
-# Required for muCommander
+# Required for Java apps: muCommander, JabRef
 #export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
 # {{{ Aliases
 
-alias ls='ls --color=auto'
+alias sympy='isympy -Iq'
+alias bc='bc -q -l'
+
+alias ls='ls --color=auto --group-directories-first' 
 alias pong='ping -c3 www.google.com'
 alias ed='emacsclient -c'
 alias open='xdg-open'
@@ -28,12 +31,11 @@ alias sudo='sudo '
 alias octave='octave -q --traditional'
 
 alias pylab='ipython --no-banner --pylab'
-alias pynb='ipython notebook --pylab=inline --notebook-dir=/media/Archivos/Documents/pynb'
 
 alias grep='grep -i' # Case insensitive grep
 
 # In order to always save attachments in temp
-alias mutt='cd /media/Archivos/temp && mutt'
+alias mutt='cd ~/temp && mutt'
 
 alias cp='cp -i'
 alias mv='mv -i'
@@ -62,6 +64,10 @@ alias pdfxv='wine ~/.wine/drive_c/Program\ Files/Tracker\ Software/PDF\ Viewer/P
 
 alias emacsd='(emacs --daemon &)'
 
+alias pynbtesis='ipython notebook --pylab inline --profile=tesis'
+
+alias pynb='ipython notebook --pylab=inline --profile=default'
+
 # }}}
 
 # {{{ Environment variables
@@ -70,15 +76,13 @@ export EDITOR="emacsclient -c"
 
 #export PATH="/home/marduk/anaconda/bin":$PATH
 
-export PATH="/media/Archivos/bin":$PATH
-export PATH="/usr/local/texlive/2012/bin/x86_64-linux":$PATH
-export PATH="/media/Archivos/bin/usr/bin":$PATH
-export PATH="/home/marduk/Downloads/nbconvert":$PATH
+export PATH="/home/marduk/bin":$PATH
+export PATH="/usr/local/texlive/2013/bin/x86_64-linux":$PATH
 
 # This will source environment variables for gpg daemon 
-if [ -f "${HOME}/.gnupg/gpg-agent.env" ]; then 
-  . "${HOME}/.gnupg/gpg-agent.env" 
-fi 
+#if [ -f "${HOME}/.gnupg/gpg-agent.env" ]; then 
+#  . "${HOME}/.gnupg/gpg-agent.env" 
+#fi 
 
 #export LD_LIBRARY_PATH=/opt/cuda/lib64:$LD_LIBRARY_PATH
 #export PATH=/opt/cuda/bin/:$PATH
@@ -91,8 +95,8 @@ source ~/.bashDirB
 
 # {{{ Save and restore zathura session
 
-OPEN_FILES="/home/marduk/open_files.txt"
-WIN_WS="/home/marduk/windows_workspaces.txt"
+OPEN_FILES="/home/marduk/.open_files"
+WIN_WS="/home/marduk/.windows_workspaces"
 
 stor() {
     # List of files currently open in zathura.
@@ -119,16 +123,16 @@ rstor() {
 
 # {{{ Fast find file
 
-alias upd8='updatedb -o /media/Archivos/Documents/archivos.db -U /media/Archivos/Documents/Archivos'
+alias upd8='updatedb -l 0 -o ~/Documents/archivos.db -U ~/Documents/Archivos'
 
 loc8() {
     local PS3="Choose a file or directory: "
     IFS_OLD=$IFS
     IFS=$'\n' # Use a newline character as field separator
 
-    db_loc="/media/Archivos/Documents/archivos.db"
-    sed_dir="\/media\/Archivos\/Documents\/Archivos\/"
-    base_dir="/media/Archivos/Documents/Archivos"
+    db_loc="/home/marduk/Documents/archivos.db"
+    sed_dir="\/home\/marduk\/Documents\/Archivos\/"
+    base_dir="/home/marduk/Documents/Archivos"
     
     # -i: case insensitive, -e: file exists, -l: list N results
     select opt in $(locate -d $db_loc -i -e -l 30 "$1" | sed "s/$sed_dir//") quit
@@ -164,7 +168,26 @@ loc8() {
 
 # }}}
 
-source ~/private/icn
+source ~/Personal/private/icn
+source ~/Personal/private/iimas
 
+# Color man ouput
+man() {
+    env LESS_TERMCAP_mb=$(printf "\e[38;5;208m") \
+	LESS_TERMCAP_md=$(printf "\e[38;5;208m") \
+	LESS_TERMCAP_me=$(printf "\e[0m") \
+	LESS_TERMCAP_se=$(printf "\e[0m") \
+	LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+	LESS_TERMCAP_ue=$(printf "\e[0m") \
+	LESS_TERMCAP_us=$(printf "\e[38;5;148m") \
+	man "$@"
+}
+
+cdl () { cd "$1" && ls; }
 encpdf () { pdftk "$1" cat output "$2" user_pw "$3"; }
 pacinfo () { pacman -Qi "$1" | less; }
+pdfex () { qpdf "$1" --pages "$1" "$2" -- "$3"; }
+
+# Added by Canopy installer on 2013-07-10
+# VIRTUAL_ENV_DISABLE_PROMPT can be set to '' to make bashprompt show that Canopy is active, otherwise 1
+#VIRTUAL_ENV_DISABLE_PROMPT=1 source /home/marduk/Enthought/Canopy_64bit/User/bin/activate

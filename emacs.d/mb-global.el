@@ -1,4 +1,4 @@
-;;========================
+;========================
 ;; Global configuration
 ;;========================
 
@@ -8,7 +8,10 @@
 ;; (cua-mode t)
 
 ;; Auto-Fill Mode
-;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;; Parens mode
+(add-hook 'text-mode-hook 'show-paren-mode)
 
 ;; SkeletonMode
 ;; -------------
@@ -20,30 +23,35 @@
 ;; CopyFromAbove
 ;; ---------------
 (autoload 'copy-from-above-command "misc"
-   "Copy characters from previous non-blank line, starting just above point."
- 'interactive)
+    "Copy characters from previous non-blank line, starting just above point."
+  'interactive)
 
 (global-set-key (kbd "C-c u") 'copy-from-above-command)
-(global-set-key (kbd "C-<tab>") 'indent-relative)
+;;(global-set-key (kbd "C-<tab>") 'indent-relative)
 
 ;;}}}
 
 ;;{{{ Appearance 
 
+;; Fringe
+(set-face-background 'fringe "black")
+
 ;; Fonts
 (set-face-attribute 'default nil :height 150)
+
 
 ;; Themes
 ;; -------
 
 ;; color-theme package
+
 (color-theme-initialize)
 (color-theme-goldenrod)
 ;;(color-theme-lethe)
 
-;;
-;;(add-to-list 'custom-theme-load-path (expand-file-name "underwater-theme.el" themes-dir))
+;; external themes 
 
+;;(add-to-list 'custom-theme-load-path (expand-file-name "underwater-theme.el" themes-dir))
 ;;(load-theme 'underwater t)
 
 ;;(load-theme 'zenburn t)
@@ -58,17 +66,27 @@
 (global-set-key (kbd "M-SPC") 'set-mark-command)
 
 ;;(global-set-key (kbd "<f1>") 'save-buffer)
-(global-set-key (kbd "C-;") 'isearch-forward)
-(define-key isearch-mode-map (kbd "C-;") 'isearch-repeat-forward)
 
-(add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-	    (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
-	    (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
+;;(global-set-key (kbd "C-;") 'isearch-forward)
+;;(define-key isearch-mode-map (kbd "C-;") 'isearch-repeat-forward)
 
-	    (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
-	    (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
-))
+(defun en-us-keymap ()
+  (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
+  (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
+
+  (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
+  (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
+)
+
+(defun es-latam-keymap ()
+  (local-set-key (kbd "8") '(lambda () (interactive) (insert "(")))
+  (local-set-key (kbd "9") '(lambda () (interactive) (insert ")")))
+
+  (local-set-key (kbd "(") '(lambda () (interactive) (insert "8")))
+  (local-set-key (kbd ")") '(lambda () (interactive) (insert "9")))
+)
+
+(add-hook 'emacs-lisp-mode-hook 'es-latam-keymap)
 
 ;;}}}
 
@@ -80,9 +98,11 @@
 ;; Save all backup files in a directory
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-(defadvice split-window (after move-point-to-new-window activate)
-  "Moves the point to the newly created window after splitting."
-  (other-window 1))
+;; Conflicts with ebib
+;;
+;; (defadvice split-window (after move-point-to-new-window activate)
+;;   "Moves the point to the newly created window after splitting."
+;;   (other-window 1))
 
 ;; Completion-ignore-case
 (setq read-buffer-completion-ignore-case t)
@@ -126,5 +146,11 @@
   "insert file path"
   (interactive "FPath: ")
   (insert (expand-file-name file)))
+
+(setenv "PATH"
+	(concat
+	 "/home/marduk/bin" ":"
+	 (getenv "PATH")
+))
 
 (provide 'mb-global)

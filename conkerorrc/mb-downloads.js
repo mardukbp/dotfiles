@@ -1,6 +1,6 @@
 // Downloads
 // -----------
-cwd = make_file("/media/Archivos/Downloads");
+cwd = make_file("~/Downloads");
 remove_hook("download_added_hook", open_download_buffer_automatically);
 
 function suggest_save_path_from_file_name (file_name, buffer) {
@@ -29,13 +29,13 @@ var replace_map = {
     //     }
     // },
     "\.torrent$": {
-        "path": "/media/Archivos/Downloads/torrents/",
+        "path": "~/Downloads/torrents/",
         "transformer": function (filename) {
             return filename;
         }
     },
     "\.djvu$": {
-        "path": "/media/Archivos/Downloads/Libros/",
+        "path": "~/Downloads/Libros/",
         "transformer": function (filename) {
             return filename;
         }

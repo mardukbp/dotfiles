@@ -17,6 +17,8 @@
 (setq themes-dir
       (expand-file-name "themes" site-lisp-dir))
 
+(add-to-list 'Info-default-directory-list (expand-file-name "ebib" site-lisp-dir))
+
 (add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
 (add-to-list 'custom-theme-load-path themes-dir)
@@ -30,12 +32,13 @@
 
 ;; Load config files
 (require 'mb-global)
-(eval-after-load 'org '(require 'mb-org))
+(require 'mb-org)
 (eval-after-load 'dired '(require 'mb-dired))
 (require 'mb-mu4e)
 (require 'mb-extern)
 (require 'mb-scicomp)
 (require 'mb-term)
+(eval-after-load 'cc-mode '(require 'mb-c))
 
 ;; LaTeX
 (require 'tex-site)

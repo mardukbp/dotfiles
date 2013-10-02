@@ -4,21 +4,27 @@
 
 ;;{{{ Setup
 
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(require 'org)
 (require 'org-protocol)
 (require 'org-capture)
+(require 'org-special-blocks)
+
+;; Load org-mode when starting emacs
+;; (pop-to-buffer (get-buffer-create (generate-new-buffer-name "*scratch-org*")))
+;; (insert "Scratch buffer with org-mode.\n\n")
+(org-mode)
 
 (setq default-input-method 'latin-1-prefix)
 (add-hook 'org-mode-hook 'toggle-input-method)
 
 ;; My org files
-(setq org-directory (expand-file-name (file-name-as-directory "/media/Archivos/Documents/org/")))
+(setq org-directory (expand-file-name (file-name-as-directory "~/Org/")))
 
 ;; Mobile-org files
 ;;(setq org-mobile-directory (expand-file-name "MobileOrg" org-directory))
 ;;(setq org-mobile-files (cons (expand-file-name "notes.org" org-directory)))
 
-(add-hook 'org-mode-hook 'turn-on-font-lock)
+;; (add-hook 'org-mode-hook 'turn-on-font-lock)
 ;(add-hook 'org-mode-hook 'emph-bold)
 ;(add-hook 'org-mode-hook 'emph-italics)
 
@@ -40,12 +46,17 @@
 ;(setq org-log-done t)
 ;(setq org-src-fontify-natively t)
 
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (local-set-key (kbd "8") '(lambda () (interactive) (insert "*")))
+(defun org-en-us-kmap ()
+  (local-set-key (kbd "8") '(lambda () (interactive) (insert "*")))
+  (local-set-key (kbd "*") '(lambda () (interactive) (insert "8")))
+)
 
-	    (local-set-key (kbd "*") '(lambda () (interactive) (insert "8")))
-))
+(defun org-es-latam-kmap ()
+  (local-set-key (kbd "+") '(lambda () (interactive) (insert "*")))
+  (local-set-key (kbd "*") '(lambda () (interactive) (insert "+")))
+)
+
+(add-hook 'org-mode-hook 'org-es-latam-kmap)
 
 ;;}}}
 
@@ -118,7 +129,7 @@
       (file+headline (concat org-directory "fisica.org") "Física" )
       "* %?\n %i\n")
 
-     ("p" "PhysOrg" entry
+     ("o" "PhysOrg" entry
       (file+headline (concat org-directory "science+tech.org") "PhysOrg" )
       "* %?\n %i\n")
 
@@ -147,6 +158,10 @@
       "* %?\n %i\n")
 
      ("d" "Docencia")
+
+     ("df" "Curso de física computacional" entry
+      (file+headline (concat org-directory "docencia.org") "Física Computacional" )
+      "* %?\n %i\n")
 
      ("dc" "Curso de computación" entry
       (file+headline (concat org-directory "docencia.org") "Computación" )
@@ -183,6 +198,36 @@
 ;; Flyspell
 ;; ---------
 ;;(setq ispell-local-dictionary "castellano")
+
+;;{{{ Insert link to open file
+
+(defun org-insert-link-open-file ()
+  (interactive)
+  
+  (let* ((cmdstr "ps aux | grep zathura | egrep \"(\\.pdf)\" | sed 's/^.* \\//\\//g'")
+	 (pszathura (shell-command-to-string cmdstr))
+	 (sane (substring (replace-regexp-in-string "^/bin.*" ""
+      pszathura) 0 -2))
+	 (open-files (split-string sane "[\n]"))
+	 (org-link-file (completing-read "Select file: " open-files))
+	 (org-link-description (read-from-minibuffer "Description: ")))
+ 
+    (insert "[[file://" (format "%s" org-link-file) "]["
+      org-link-description "]]")))
+
+;;}}}
+
+;;{{{ Ebib
+(org-add-link-type "ebib" 'ebib)
+
+(defun org-ebib-link ()
+  (interactive)
+  
+  (let* ((collection (edb-keys-list ebib-cur-db))
+	 (org-ebib-key (completing-read "Select key: " collection)))
+    (insert "[[ebib:" (format "%s" org-ebib-key) "][" org-ebib-key "]]")))
+
+;;}}}
 
 ;;{{{ Autopairs
 ;; ----------
@@ -261,12 +306,10 @@ a sound to be played"
 
 ;;{{{ Open with
 ;; -------------
-;; (add-hook 'org-mode-hook
-;;     '(lambda ()
-;;          (setq org-file-apps
-;;              (append '(
-;;                  ("\\.pdf\\'" . zathura)
-;;              ) org-file-apps ))))
+(add-hook 'org-mode-hook
+	  '(lambda ()
+	     (setq org-file-apps
+		   '(("\\.pdf\\'" . "zathura %s")))))
 
 ;;}}}
 
@@ -274,8 +317,9 @@ a sound to be played"
 ;; ------------------
 
 (setq org-structure-template-alist
-      '(("m" "#+begin_comment?\n\n#+end_comment")
-       ))
+      '(("l" "#+begin_LaTeX\n?\n#+end_LaTeX")
+	("e" "\\begin{equation}\n?\n\\end{equation}")
+))
 
 ;;}}}
 

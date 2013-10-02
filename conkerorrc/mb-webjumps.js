@@ -2,11 +2,23 @@
 // ----------
 
 // Shortcuts
-webjumps.g = webjumps.google;
+//webjumps.g = webjumps.google;
+webjumps.g = webjumps.duckduckgo;
 
-// Zotero
+//Kindle Reader
+define_webjump("kindle","https://read.amazon.com/");
 
-define_webjump("zotero","javascript:var%20d=document,s=d.createElement('script');s.src='https://www.zotero.org/bookmarklet/loader.js';(d.body?d.body:d.documentElement).appendChild(s);void(0);");
+// IPython Notebook wikiphysics
+define_webjump("wip","http://localhost:8889");
+
+// IPython Notebook
+define_webjump("pynb","http://localhost:8888");
+
+// Zotero translator
+//define_webjump("zotero","javascript:var%20d=document,s=d.createElement('script');s.src='https://raw.github.com/zotero/translators/master/arXiv.org.js';(d.body?d.body:d.documentElement).appendChild(s);void(0);");
+
+// Zotero client
+//define_webjump("zotero","javascript:var%20d=document,s=d.createElement('script');s.src='https://www.zotero.org/bookmarklet/loader.js';(d.body?d.body:d.documentElement).appendChild(s);void(0);");
 
 // Print friendly 
 // www.printfriendly.com/‎

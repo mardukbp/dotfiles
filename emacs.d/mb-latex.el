@@ -2,13 +2,20 @@
 ;; LaTeX
 ;;====================
 
+;; Add PATH
+(setenv "PATH"
+(concat "/usr/local/texlive/2013/bin/x86_64-linux" ":" (getenv "PATH")))
+
 ;; Preview LaTeX
 (load "preview-latex.el" nil t t)
+
+(setq-default TeX-master t)
 
 ;; Fold mode
 (add-hook 'LaTeX-mode-hook 'TeX-fold-mode)
 
 ;;{{{ Compile LaTeX
+
 ;; --------------
 
 (setq TeX-PDF-mode t)
@@ -84,8 +91,6 @@ Delimiters are paired characters:
 ;; enable LaTeX-math-mode by default
 ;;(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-
-
 ;; Spellcheck on the fly
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 ;;(add-hook 'tex-mode-hook 'flyspell-mode)
@@ -95,32 +100,50 @@ Delimiters are paired characters:
 
 ;;'(LaTeX-math-abbrev-prefix (kbd ":"))
 
-;; Keymaps
+;;{{{ Keymaps
 ;; --------
 ;; Revisar APL keymap en Xah Lee
 
 ;;(load-file (expand-file-name "tex/xetex-symbols-keymap.el" user-emacs-directory))
 ;;(load-file (expand-file-name "tex/xetex-greek-keymap.el" user-emacs-directory))
 
-(add-hook 'LaTeX-mode-hook
-          (lambda () 
-	    (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
-	    (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
-	    (local-set-key (kbd "6") '(lambda () (interactive) (insert "^")))
-	    (local-set-key (kbd "7") '(lambda () (interactive) (insert "&")))
-	    (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
-	    (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
-	    (local-set-key (kbd "=") '(lambda () (interactive) (insert "+")))
+(defun TeX-en-us-kmap ()
+  (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
+  (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
+  (local-set-key (kbd "6") '(lambda () (interactive) (insert "^")))
+  (local-set-key (kbd "7") '(lambda () (interactive) (insert "&")))
+  (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
+  (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
+  (local-set-key (kbd "=") '(lambda () (interactive) (insert "+")))
+  
+  (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
+  (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
+  (local-set-key (kbd "^") '(lambda () (interactive) (insert "6")))
+  (local-set-key (kbd "&") '(lambda () (interactive) (insert "7")))
+  (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
+  (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
+  (local-set-key (kbd "+") '(lambda () (interactive) (insert "=")))
+)
 
-	    (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
-	    (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
-	    (local-set-key (kbd "^") '(lambda () (interactive) (insert "6")))
-	    (local-set-key (kbd "&") '(lambda () (interactive) (insert "7")))
-	    (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
-	    (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
-	    (local-set-key (kbd "+") '(lambda () (interactive) (insert "=")))
+(defun TeX-es-latam-kmap ()
+  (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
+  (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
+  (local-set-key (kbd "6") '(lambda () (interactive) (insert "&")))
+  (local-set-key (kbd "8") '(lambda () (interactive) (insert "(")))
+  (local-set-key (kbd "9") '(lambda () (interactive) (insert ")")))
+  (local-set-key (kbd "0") '(lambda () (interactive) (insert "=")))
+  
+  (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
+  (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
+  (local-set-key (kbd "&") '(lambda () (interactive) (insert "6")))
+  (local-set-key (kbd "(") '(lambda () (interactive) (insert "8")))
+  (local-set-key (kbd ")") '(lambda () (interactive) (insert "9")))
+  (local-set-key (kbd "=") '(lambda () (interactive) (insert "0")))
+)
 
-))
+(add-hook 'LaTeX-mode-hook 'TeX-es-latam-kmap)
+
+;;}}}
 
 ;; modify bindings for math mode
 ;; ------------------------------

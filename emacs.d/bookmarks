@@ -2,16 +2,31 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("org-capture-last-stored"
- (filename . "/media/Archivos/Documents/org/gtd.org")
- (front-context-string . "*** Configurar ~")
- (rear-context-string . "wiki a org-mode\n")
- (position . 3837))
-("Downloads"
- (filename . "/media/Archivos/Downloads/")
- (front-context-string . "Albums/\n  drwxr-")
- (rear-context-string . "0K May 23 02:11 ")
- (position . 114))
+(("Downloads"
+ (filename . "~/Downloads/")
+ (front-context-string . "./\n  drwxr-xr-x ")
+ (rear-context-string . "2K Jul  1 13:52 ")
+ (position . 112))
+("Archivos"
+ (filename . "~/Documents/Archivos/")
+ (front-context-string . "./\n  drwxr-xr-x ")
+ (rear-context-string . "0K May 23 01:36 ")
+ (position . 121))
+("todo"
+ (filename . "~/Org/gtd.org")
+ (front-context-string . "* Pendientes\n\n**")
+ (rear-context-string)
+ (position . 1))
+("Tesis_QT"
+ (filename . "~/Documents/Tesis_QT/")
+ (front-context-string . "drwxr-xr-x 14  4")
+ (rear-context-string . "ble 110060900\n  ")
+ (position . 88))
+("org-capture-last-stored"
+ (filename . "~/Documents/org/science+tech.org")
+ (front-context-string . "** White dwarf s")
+ (rear-context-string . "=ff8980aa20[20]\n")
+ (position . 15603))
 ("dotfiles"
  (filename . "~/dotfiles/")
  (front-context-string . "conkerorrc/\n  dr")
@@ -27,21 +42,11 @@
  (front-context-string . "calccard.pdf\n  -")
  (rear-context-string . "2K Jan  2 20:05 ")
  (position . 205))
-("tesis"
- (filename . "/media/Archivos/Documents/Archivos/UNAM/Maestría/Tesis_QT/")
- (front-context-string . "Computational Me")
- (rear-context-string . "0K Dec 30 11:23 ")
- (position . 147))
 ("org"
  (filename . "/media/Archivos/Documents/org")
  (front-context-string . "arch.txt\n  -rw-r")
  (rear-context-string . "4K Jul 11  2012 ")
  (position . 148))
-("todo"
- (filename . "/media/Archivos/Documents/org/gtd.org")
- (front-context-string . "* TODOs\n\n** UNAM")
- (rear-context-string)
- (position . 1))
 ("home"
  (filename . "~/")
  (front-context-string . "Anki/\n  drwxr-xr")
@@ -57,9 +62,4 @@
  (front-context-string . "Archivos/\n  drwx")
  (rear-context-string . "2K May  1 12:57 ")
  (position . 95))
-("Archivos"
- (filename . "/media/Archivos/Documents/Archivos/")
- (front-context-string . "  /media/Archivo")
- (rear-context-string)
- (position . 1))
 )
