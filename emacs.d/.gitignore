@@ -7,5 +7,4 @@ site-lisp
 url
 ac-comphist.dat
 tramp
-mb-dired.el
 *.eld
