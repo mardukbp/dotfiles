@@ -9,6 +9,7 @@
 (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
 ;; Toggle the view with dired-omit-mode (M-o by default).
 
+(add-to-list 'load-path (expand-file-name "dired-details" site-lisp-dir))
 (require 'dired-details+)
 
 ;;{{{ Defuns
@@ -37,6 +38,17 @@
 
 (global-set-key (kbd "C-c s") 'sudo-find-file)
 
+
+(defun truecrypt ()
+  (interactive)
+  (shell-command "truecrypt --mount /home/marduk/Documents/thevault /media/truecrypt1")
+  (dired-x-find-file "/media/truecrypt1")
+)
+
+(defun unmount-truecrypt ()
+  (interactive)
+  (shell-command "truecrypt --dismount /media/truecrypt1")
+)
 
 ;;}}}
 
