@@ -19,3 +19,6 @@ TEXT
 #${exec emacs -batch -l ~/.emacs -eval '(org-batch-agenda "a" \
 			 org-agenda-span (quote day))' 2> /dev/null}
 ${exec cat ~/Org/agenda}
+
+${if_match ${battery_percent BAT1} <= 8}${if_match ${battery_percent BAT1} > 5}${execi 200 urxvtc -e ~/bin/warn-shutdown}${endif}${endif}
+${if_match ${battery_percent BAT1} <= 5}${execi 200 urxvtc -e ~/bin/shutdown-now}${endif}

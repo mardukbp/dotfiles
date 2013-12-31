@@ -109,6 +109,9 @@ minibuffer_auto_complete_default = true;
 url_completion_use_history = true; 
 url_completion_use_bookmarks = true;
 
+// view source in your editor
+view_source_use_external_editor = true;
+
 // }}}
 
 // Bookmarks with Clark
@@ -178,7 +181,26 @@ remove_hook("mode_line_hook", mode_line_adder(clock_widget));
 // Active download count
 add_hook("mode_line_hook", mode_line_adder(downloads_status_widget));
 
+// Proxy settings
+
+function proxy_widget(window){
+    this.class_name = "proxy-widget";
+    text_widget.call(this, window);
+    this.add_hook("select_buffer_hook");
+}
+proxy_widget.prototype = {
+    constructor: proxy_widget,
+    __proto__: text_widget.prototype,
+    update: function(){
+    	var proxy = get_pref("network.proxy.type");
+    	this.view.text = proxy;
+    }
+};
+ 
+add_hook("mode_line_hook", mode_line_adder(proxy_widget));
+
 // }}}
+
 
 // Local variables:
 // mode: js

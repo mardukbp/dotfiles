@@ -19,7 +19,11 @@ syntax enable
 set encoding=utf8
 set wrap
 
-colorscheme mustang
+colorscheme molokai
+"colorscheme gruvbox
+"colorscheme jellybeans
+"colorscheme grb256
+"colorscheme distinguished
 "colorscheme vividchalk
 "colorscheme breeze
 set keymap=accents
@@ -64,7 +68,7 @@ if has('statusline')
 endif
 
 " Copy from above
-nmap <C-Up> kly$jp
+imap <C-Up> kly$jp
 
 " Switch between windows splitted vertically
 map <leader>j :wincmd j<CR>
