@@ -1,0 +1,6 @@
+# <minute> <hour> <day of month> <month> <day of week> <command>
+# 0-59     0-23       1-31        1-12       0-6
+
+00 00 * * * ~/bin/agenda_export.sh
+#Back In Time system entry, this will be edited by the gui:
+#Please don't delete these two lines, or all custom backintime entries are going to be deleted next time you call the gui options!
