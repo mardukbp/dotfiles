@@ -1,0 +1,176 @@
+% vim: set foldmethod=marker:
+% vim: set foldmarker={{{{,}}}}:
+
+\RequirePackage{
+    ifthen,
+    amsmath,
+    amssymb,
+    booktabs,
+    float,
+    physics,
+    todonotes
+}
+
+\RequirePackage[labelfont=bf]{caption}
+\RequirePackage[spanish, mexico]{babel}
+\RequirePackage[utf8]{inputenc}
+%\RequirePackage[]{hyperref}
+%\RequirePackage[]{fancyhdr}
+
+%{{{{ Math macros
+
+% AMS bold math symbols
+%\RequirePackage{amsbsy}
+
+% Position vector
+\renewcommand{\r}[1]{\v{r}_{#1}}
+
+% Conmutador
+\newcommand{\conmu}[2]{[#1#2 - #2#1]}
+
+% Reset equation counter
+\newcommand{\rc}{\setcounter{equation}{0}}
+
+% numero de ejercicio
+\def\ex#1{\rc\fbox{#1.}}
+
+% a/b
+\def\f #1/#2{\frac{#1}{#2}}
+
+% identidad
+\newcommand{\id}{\mathbb{1}}
+
+%% Operadores
+\DeclareMathOperator{\e}{e}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Det}{det}
+
+%% Incrementamos la separacion entre los renglones en una matriz de amsmath
+\renewcommand\arraystretch{1.5}
+
+% derivada respecto al tiempo
+\newcommand{\dt}[1]{\od{#1}{t}}
+
+% integral \int{dx}{inf}{sup}{f}
+\newcommand{\integ}[4]{\int_{#2}^{#3} #4 \mathrm{d}#1}
+
+%% Requires amsmath
+
+% matriz hasta de 10x10
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+% determinante hasta de 10x10
+\renewcommand{\det}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+% rotacional
+\newcommand{\rot}[1]{\vec{\nabla}\times #1}
+
+% divergencia
+\newcommand{\divv}[1]{\vec{\nabla}\cdot #1}
+
+%% Quantum Mechanics
+
+% Schroedinger factor 1/ih
+\newcommand{\fihbar}{\frac{1}{i\hbar}}
+
+%{{{{ Estos comandos los proporciona physics.sty
+
+%% Requires commath
+
+% diferencial
+\renewcommand{\d}[1]{\dif{#1}}
+% entre parentesis
+\newcommand{\ep}[1]{\del{#1}}
+% entre corchetes cuadrados
+\newcommand{\ec}[1]{\sbr{#1}}
+% entre llaves
+\newcommand{\el}[1]{\cbr{#1}}
+% evaluado en el intervalo
+%\newcommand{\ev}[3]{#1 \biggr|_{#2}^{#3}}
+
+% Valor absoluto
+\newcommand{\@commath@loaded}{0}
+\AtBeginDocument{\@ifpackageloaded{commath}
+  {\renewcommand{\@commath@loaded}{1}}
+  {\renewcommand{\@commath@loaded}{0}}
+}
+\ifthenelse{\@commath@loaded=1}{\renewcommand{\abs}[1]{\bigl|#1\bigr|}}{}
+
+% Valor esperado
+\newcommand{\vesp}[1]{\ensuremath{\left\langle #1 \right\rangle}}
+
+% Elemento de matriz
+\newcommand{\mel}[3]{\ensuremath{\left\langle #1 \vphantom{#2}|  #2 \vphantom{#2}| #3 \right\rangle}}
+
+\newcommand{\bket}[2]{\ensuremath{\bigl\langle#1 \bigr| #2\bigr\rangle}}
+\newcommand{\kbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\bra}[1]{\ensuremath{\left\langle #1 \right|}}
+\newcommand{\ket}[1]{\ensuremath{\bigl| #1 \bigr\rangle}}
+
+%}}}}
+
+% 1/sqrt(N)
+\newcommand{\fsqrt}[1]{\tfrac{1}{\sqrt{#1}}}
+
+% Pauli matrices
+\newcommand{\sx}{\sigma_x}
+\newcommand{\sy}{\sigma_y}
+\newcommand{\sz}{\sigma_z}
+
+%% Vector and matrix
+
+% Requires amsbsy
+\renewcommand{\v}[1]{\boldsymbol{#1}}
+
+%Unit vector
+\renewcommand{\u}[1]{\hat{\mathbf{#1}}}
+\newcommand{\m}[1]{\mathbb{#1}}
+
+%% Levi Civita
+\newcommand{\levi}[1]{\epsilon_{#1}}
+
+%%% Estos comandos hacen ilegible el texto
+
+%%sqrt
+% \newcommand{\s}[1]{\sqrt{#1}}
+
+%%Estados propios de sigma_z
+% \newcommand{\kp}{\ket{+}}
+% \newcommand{\km}{\ket{-}}
+
+%%Base sz del espacio de s=1/2
+% \newcommand{\kbpp}{\kbra{+}{+}}
+% \newcommand{\kbpm}{\kbra{+}{-}}
+% \newcommand{\kbmp}{\kbra{-}{+}}
+% \newcommand{\kbmm}{\kbra{-}{-}}
+
+%%%
+
+% Half-angle
+\newcommand[1]{\cosha}{\cos\frac{#1}{2}}
+\newcommand[1]{\sinha}{\sin\frac{#1}{2}}
+\newcommand[1]{\tanha}{\tan\frac{#1}{2}}
+
+% Half-angle squared
+\newcommand[1]{\coshas}{\cos^2\frac{#1}{2}}
+\newcommand[1]{\sinhas}{\sin^2\frac{#1}{2}}
+\newcommand[1]{\tanhas}{\tan^2\frac{#1}{2}}
+
+% Seccion transversal de colision diferencial
+\newcommand{\dcs}{\frac{d\sigma{d\Omega}}
+
+%}}}
+
+%{{{ Beamer
+
+%Caja de ecuaciones auxiliares
+\newcommand{\eqaux}[2]{%
+\only<#1>{%
+ \begin{beamercolorbox}[dp=3em,ht=3em]{block body}%
+#2%
+\end{beamercolorbox}%
+}%
+}
+
+%}}}}
+
+\ProvidesPackage{dukxetex}

@@ -1,0 +1,250 @@
+% vim: set foldmethod=marker:
+% vim: set foldmarker={{{{,}}}}:
+
+\RequirePackage[spanish, mexico]{babel}
+\RequirePackage{
+    kvoptions,
+    ifthen,
+    amsmath,
+    amssymb,
+    amsfonts,
+    amsbsy,
+    booktabs,
+    float,
+    todonotes
+}
+\RequirePackage[italicdiff]{physics}
+\RequirePackage[labelfont=bf]{caption}
+\RequirePackage[utf8]{inputenc}
+%\RequirePackage[]{hyperref}
+%\RequirePackage[]{fancyhdr}
+
+%{{{{ Package options
+
+\SetupKeyvalOptions{
+  family=DUK,
+  prefix=DUK@
+}
+
+\DeclareBoolOption{python}
+
+\ProcessKeyvalOptions*
+
+\ifDUK@python
+\RequirePackage{pythontex}
+\begin{pythontexcustomcode}{sympy}
+from matrix2latex import matrix2latex
+from sympy.abc import *
+from sympy import *
+\end{pythontexcustomcode}
+\fi
+
+%}}}}
+
+%{{{{ Ejercicios
+
+% Reset equation counter
+\newcommand{\rc}{\setcounter{equation}{0}}
+
+% numero de ejercicio
+\def\ex#1{\rc\fbox{#1.}}
+
+%}}}}
+
+%{{{{ Math macros
+
+%{{{{ Simbolos
+
+%% Requires amsbsy
+% greek vector
+\newcommand{\gvec}[1]{\boldsymbol{#1}}
+
+% vector
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+% Unit vector
+\newcommand{\unit}[1]{\hat{\mathbf{#1}}}
+
+% Blackboard Matrix
+\newcommand{\mat}[1]{\mathbb{#1}}
+
+% Levi-Civita symbol
+\newcommand{\levi}[1]{\epsilon_{#1}}
+
+%}}}}
+
+%{{{{ Atajos
+
+% a/b
+\def\f #1/#2{\frac{#1}{#2}}
+
+%% Requires phyics
+
+% Producto tensorial
+\newcommand{\tensorp}{\otimes}
+
+% derivada respecto al tiempo
+\newcommand{\dt}[1]{\dv{#1}{t}}
+
+% integral \int{dx}{inf}{sup}{f}
+\newcommand{\integ}[4]{\int_{#2}^{#3} #4 \mathrm{d}#1}
+
+% 1/sqrt(N)
+\newcommand{\fsqrt}[1]{\tfrac{1}{\sqrt{#1}}}
+
+% Half-angle
+\newcommand{\cosha}[1]{\cos\frac{#1}{2}}
+\newcommand{\sinha}[1]{\sin\frac{#1}{2}}
+\newcommand{\tanha}[1]{\tan\frac{#1}{2}}
+
+% Half-angle squared
+\newcommand{\coshas}[1]{\cos^2\frac{#1}{2}}
+\newcommand{\sinhas}[1]{\sin^2\frac{#1}{2}}
+\newcommand{\tanhas}[1]{\tan^2\frac{#1}{2}}
+
+%}}}}
+
+%% Operadores
+\DeclareMathOperator{\e}{e}
+
+%% Incrementamos la separacion entre los renglones en una matriz de amsmath
+%\renewcommand\arraystretch{1.5}
+
+%{{{{ Comandos reemplazados por sympy
+
+%% Requires amsmath
+
+% matriz hasta de 10x10
+%\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+% determinante hasta de 10x10
+%\newcommand{\detmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+%}}}}
+
+%{{{{ Quantum Mechanics
+
+% Inverse operator
+\newcommand{\inv}[1]{#1^{-1}}
+
+% Adjoint operator
+\newcommand{\adj}[1]{#1^{\dagger}}
+
+% Hilbert space
+\newcommand{\Hilbert}{\mathcal{H}}
+
+% Liouville space
+\newcommand{\Liouville}{\mathcal{L}}
+
+% State operator
+\newcommand{\StateOp}{\hat{\rho}}
+
+% Quantum System
+\newcommand{\System}[1]{\mathcal{#1}}
+
+% Operator acting on Hilbert space
+\newcommand{\Hop}[1]{\hat{#1}}
+
+% Operator acting on Liouville space
+\newcommand{\Lop}[1]{\breve{#1}}
+
+% Liouville space ket
+\newcommand{\Lket}[1]{\ensuremath{\bigl| #1 \bigr)}}
+
+% Liouville space braket
+\newcommand{\Lbket}[2]{\ensuremath{\bigl(#1 \bigr| #2\bigr)}}
+
+% Liouville space ketbra
+\newcommand{\Lkbra}[2]{\Lket{#1}\Lbra{#2}}
+
+% Liouville space bra
+\newcommand{\Lbra}[1]{\ensuremath{\left( #1 \right|}}
+
+% Seccion transversal de colision diferencial
+\newcommand{\dcs}{\frac{d\sigma}{d\Omega}}
+
+% Estados propios de sigma_z
+% \newcommand{\kp}{\ket{+}}
+% \newcommand{\km}{\ket{-}}
+
+% Base sz del espacio de s=1/2
+% \newcommand{\kbpp}{\kbra{+}{+}}
+% \newcommand{\kbpm}{\kbra{+}{-}}
+% \newcommand{\kbmp}{\kbra{-}{+}}
+% \newcommand{\kbmm}{\kbra{-}{-}}
+
+% Schroedinger factor 1/ih
+% Unnecesary if \hbar == 1
+%\newcommand{\fihbar}{\frac{1}{i\hbar}}
+
+% Conmutador
+% It may reduce readability
+\newcommand{\commu}[2]{[#1#2 - #2#1]}
+
+% Pauli matrices
+\newcommand{\sx}{\sigma_x}
+\newcommand{\sy}{\sigma_y}
+\newcommand{\sz}{\sigma_z}
+
+%}}}}
+
+%{{{{ Estos comandos los proporciona physics.sty
+
+%% Requires commath
+
+% rotacional
+%\newcommand{\rot}[1]{\vec{\nabla}\times #1}
+
+% divergencia
+%\newcommand{\divv}[1]{\vec{\nabla}\cdot #1}
+
+%\DeclareMathOperator{\Tr}{Tr}
+%\DeclareMathOperator{\Det}{det}
+
+% diferencial
+%\renewcommand{\d}[1]{\dif{#1}}
+% entre parentesis
+%\newcommand{\ep}[1]{\del{#1}}
+% entre corchetes cuadrados
+%\newcommand{\ec}[1]{\sbr{#1}}
+% entre llaves
+%\newcommand{\el}[1]{\cbr{#1}}
+% evaluado en el intervalo
+%\newcommand{\ev}[3]{#1 \biggr|_{#2}^{#3}}
+
+% Valor absoluto
+%\newcommand{\@commath@loaded}{0}
+%\AtBeginDocument{\@ifpackageloaded{commath}
+%  {\renewcommand{\@commath@loaded}{1}}
+%  {\renewcommand{\@commath@loaded}{0}}
+%}
+%\ifthenelse{\@commath@loaded=1}{\renewcommand{\abs}[1]{\bigl|#1\bigr|}}{}
+
+% Valor esperado
+%\newcommand{\vesp}[1]{\ensuremath{\left\langle #1 \right\rangle}}
+
+% Elemento de matriz
+%\newcommand{\mel}[3]{\ensuremath{\left\langle #1 \vphantom{#2}|  #2 \vphantom{#2}| #3 \right\rangle}}
+
+%\newcommand{\bket}[2]{\ensuremath{\bigl\langle#1 \bigr| #2\bigr\rangle}}
+%\newcommand{\kbra}[2]{\ket{#1}\bra{#2}}
+%\newcommand{\bra}[1]{\ensuremath{\left\langle #1 \right|}}
+%\newcommand{\ket}[1]{\ensuremath{\bigl| #1 \bigr\rangle}}
+
+%}}}}
+
+%}}}}
+
+%{{{{ Beamer
+
+%Caja de ecuaciones auxiliares
+\newcommand{\eqaux}[2]{%
+\only<#1>{%
+ \begin{beamercolorbox}[dp=3em,ht=3em]{block body}%
+#2%
+\end{beamercolorbox}%
+}%
+}
+
+%}}}}
+
+\ProvidesPackage{duktex}
