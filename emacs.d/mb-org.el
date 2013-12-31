@@ -37,11 +37,12 @@
 ;;}}}
 
 ;;{{{ Key bindings
+
 ;; --------------
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-(global-set-key (kbd "<f1>") 'org-capture)
+(global-set-key (kbd "<f4>") 'org-capture)
 ;;(global-set-key "\C-cc" 'org-capture)
 ;(setq org-log-done t)
 ;(setq org-src-fontify-natively t)
@@ -189,9 +190,21 @@
 
 ;;{{{ LaTeX
 
+;; bigger latex fragment
+(plist-put org-format-latex-options :scale 1.5)
+
 ;;(require 'org-latex)
 ;;(setq org-export-latex-listings 'minted)
 ;;(add-to-list 'org-export-latex-packages-alist '("" "minted"))
+
+;;}}}
+
+;;{{{ Org-Babel
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((python . t)))
+
+(setq org-babel-python-command "python2")
 
 ;;}}}
 
@@ -316,10 +329,10 @@ a sound to be played"
 ;;{{{ Easy templates
 ;; ------------------
 
-(setq org-structure-template-alist
-      '(("l" "#+begin_LaTeX\n?\n#+end_LaTeX")
-	("e" "\\begin{equation}\n?\n\\end{equation}")
-))
+;; (setq org-structure-template-alist
+;;       '(("l" "#+begin_LaTeX\n?\n#+end_LaTeX")
+;; 	("e" "\\begin{equation}\n?\n\\end{equation}")
+;; ))
 
 ;;}}}
 

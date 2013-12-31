@@ -16,12 +16,21 @@
 
 ;;{{{ Compile LaTeX
 
-;; --------------
-
 (setq TeX-PDF-mode t)
 
 ;; Ask no questions
-(add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-force "latex")))
+(add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-force "arara")))
+
+;; Use arara
+(eval-after-load "tex"
+  '(add-to-list 'TeX-expand-list '("%(ppp-file-name)" (lambda () (concat "\"" (car (split-string (buffer-file-name) "\\.Plw")) "\"")))))
+
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list '("arara" "arara -v %(ppp-file-name)" TeX-run-command nil t :help "Run arara on TeX file")))
+
+;; Support for Pweave
+(setq auto-mode-alist (append (list (cons "\\.Plw$" 'LaTeX-mode))
+                   auto-mode-alist))
 
 ;; (defun latex ()
 ;;   (interactive)
@@ -31,6 +40,18 @@
 ;; (global-set-key (kbd "<f4>") 'latex)
 
 ;;}}}
+
+(defun LaTeX-math-mark-sexp-register-save (register)
+;; Mark inline math expression and save it to a register
+  (interactive "cCopy to register: ")
+
+  (let ((end (point)))
+    (backward-sexp)
+     (let ((beg (point)))
+       (mark-sexp)
+       (copy-to-register register beg end)
+       (goto-char end)
+       )))
 
 ;;{{{ RefTeX
 
@@ -108,6 +129,8 @@ Delimiters are paired characters:
 ;;(load-file (expand-file-name "tex/xetex-greek-keymap.el" user-emacs-directory))
 
 (defun TeX-en-us-kmap ()
+  (local-set-key (kbd "<f1>") 'LaTeX-math-mark-sexp-register-save)
+  (local-set-key (kbd "<f2>") 'list-register) ;; requires list-register
   (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
   (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
   (local-set-key (kbd "6") '(lambda () (interactive) (insert "^")))
@@ -126,6 +149,9 @@ Delimiters are paired characters:
 )
 
 (defun TeX-es-latam-kmap ()
+
+  (local-set-key (kbd "<f1>") 'LaTeX-math-mark-sexp-register-save)
+  (local-set-key (kbd "<f2>") 'list-register) ;; requires list-register
   (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
   (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
   (local-set-key (kbd "6") '(lambda () (interactive) (insert "&")))

@@ -42,6 +42,7 @@
 ;;}}}
 
 ;;{{{ Variables
+
 (setq 
   mu4e-mu-home "~/Personal/mail/mu" ;; Where is the index?
   mu4e-maildir "~/Personal/mail/Maildirs" 
@@ -66,7 +67,7 @@
 (setq mu4e-bookmarks
        '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
           ("date:today..now"                  "Today's messages"     ?t)
-          ("date:1d..now"                     "Last 2 days"          ?r)
+          ("date:2d..now"                     "Last 2 days"          ?r)
 	  ("flag:flagged"                     "Flagged messages"     ?f)
 	)
 )
@@ -141,6 +142,15 @@
 ;; Type aV to open message in browser
 (add-to-list 'mu4e-view-actions
 	     '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+
+;; Add sender to bbdb
+(defun mu4e-add-sender-bbdb ()
+  (interactive)
+  (let ((from (mu4e-field-at-point :from)))  
+    (bbdb-create-internal (car (car from)) nil (cdr (car from)) nil nil nil))
+)
+
 
 ;;}}}
 
@@ -228,12 +238,57 @@ Uses ido to select the contact from all those present in the database."
 (add-hook 'mu4e-compose-mode-hook 'bbdb-define-all-aliases)
 
 (add-hook 'mu4e-compose-mode-hook
-        (defun my-do-compose-stuff ()
-           "My settings for message composition."
-	   (setq ispell-local-dictionary "castellano")
-           (set-fill-column 72)
-           (flyspell-mode)))
+	  (defun my-do-compose-stuff ()
+	    "My settings for message composition."
+	    ;;(setq ispell-local-dictionary "castellano")
+	    (set-fill-column 72)
+	    (flyspell-mode)
+	    ;; http://ertius.org/blog/stop-flyspell-claiming-m-tab/
+	    (eval-after-load "flyspell"
+	      '(progn
+		 (define-key flyspell-mode-map (kbd "M-TAB") nil)))
+	    ))
 
+
+;; BBDB + ido-mode address completion
+;; http://bigwalter.net/daniel/elisp/snippets.html
+(defun bbdb-record-address-combinations (record)
+  (let ((names (cons (let ((first (aref record 0))
+                           (last (aref record 1)))
+                       (cond ((and first last) (format "\"%s %s\"" first last))
+                             (first first)
+                             (last last)))
+                     (aref record 2)))
+        (adds (aref record 6))
+        (comb nil))
+    (dolist (name names)
+      (dolist (add adds)
+        (push (format "%s <%s>" name add) comb)))
+    comb))
+
+(defun ido-complete-bbdb-address ()
+  (interactive)
+  (let* ((end (point))
+         (beg (save-excursion
+                (re-search-backward "\\(\\`\\|[\n:,]\\)[ \t]*")
+                (goto-char (match-end 0))
+                (point)))
+         (orig (buffer-substring beg end))
+         (typed (downcase orig))
+         (pattern (bbdb-string-trim typed)))
+    (delete-region beg end)
+    (insert
+     (ido-completing-read "Record: "
+                          (let (result)
+                            (dolist (rec (bbdb-records))
+                              (setq result
+                                    (nconc (bbdb-record-address-combinations rec)
+                                           result)))
+                            result)
+                          nil nil pattern))))
+
+(add-hook 'mu4e-compose-mode-hook
+ 	  '(lambda () (local-set-key (kbd "M-TAB") 'ido-complete-bbdb-address)))
 
 ;;}}}
 

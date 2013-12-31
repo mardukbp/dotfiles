@@ -2,6 +2,7 @@
 
 (require 'auto-complete)
 (add-hook 'emacs-lisp-mode-hook 'auto-complete-mode)
+(add-hook 'markdown-mode-hook 'auto-complete-mode)
 
 ;;}}}
 
@@ -183,7 +184,37 @@
 
 ;;}}}
 
+;;{{{ Export file
+(defun ebib-export-file (dest)
+  "Export file to a given directory"
+  (interactive (list (read-directory-name "Destination:")))
+
+  (ebib-execute-when
+    ((entries)
+     (let ((filename (to-raw (car (ebib-get-field-value ebib-standard-file-field
+                                                        (edb-cur-entry ebib-cur-db))))))
+       (if filename
+           (ebib-copy-file filename dest)
+         (error "Field `%s' is empty" ebib-standard-file-field))))
+    ((default)
+     (beep))))
+
+(defun ebib-copy-file (file destdir)
+  "Copy FILE to DESTDIR"
+  (let ((file-full-path
+            (or (locate-file file ebib-file-search-dirs)
+                (locate-file (file-name-nondirectory file) ebib-file-search-dirs)
+                (expand-file-name file))))
+    (if (file-exists-p file-full-path)
+	(progn
+	  (shell-command (concat "cp " file-full-path " " "\"" destdir "\""))
+	  )
+      (error "File not found: `%s'" file-full-path))))
+;;}}}
+
 ;;{{{ Config
+
+(setq ebib-multiline-major-mode 'markdown-mode)
 
 (add-to-list 'Info-default-directory-list (expand-file-name site-lisp-dir "ebib"))
 
@@ -192,17 +223,23 @@
 
 (setq papers-dir "~/Library/Artículos")
 
+(setq thesis-dir "~/Library/Tesis")
+
 (add-to-list 'ebib-file-search-dirs (expand-file-name "arXiv" papers-dir))
 
 (add-to-list 'ebib-file-search-dirs (expand-file-name "pdf" papers-dir))
 
-;;(setq ebib-file-search-dirs '("~/Library/Artículos/pdf" "~/Library/Artículos/arXiv"))
+(add-to-list 'ebib-file-search-dirs thesis-dir)
 
 (setq ebib-file-associations '(("pdf" . "zathura") ("djvu" . "zathura")))
 
 (setq ebib-preload-bib-files '("~/Library/Artículos/articulos.bib"))
 
-(setq ebib-keywords-file "~/Library/Artículos/keywords")
+(add-to-list 'ebib-preload-bib-files "~/Library/Tesis/tesis.bib")
+
+;;(setq ebib-keywords-files-alist '())
+
+(setq ebib-keywords-file "keywords")
 
 (setq ebib-autogenerate-keys t)
 
@@ -599,16 +636,37 @@ one element from `filters-alist'."
 
     (with-current-buffer tempbuff
       (ebib-import)
-      (kill-buffer (current-buffer)))))
+      ;;(kill-buffer (current-buffer))
+)))
 
 (require 'mm-url)
 
-(defun ebib-import-bibtex (url)
+(defun ebib-import-bibtex (url filename)
   (interactive)
 
   (let ((tempbuff (get-buffer-create "*bibtex*")))  
     (with-current-buffer tempbuff
       (mm-url-insert-file-contents url)
+      
+      ;; Fix syntactically incorrect BibTeX entry
+      ;; ==========================================
+      
+      ;; from EJPD
+      (setq bibtex-key filename)
+
+      (while (search-forward "@article{\n" nil t)
+	(replace-match (concat "@article{" bibtex-key ",\n") nil t))
+
+      ;; from AIP
+      (while (search-forward "eid = ," nil t)
+	(replace-match "eid = \"\"," nil t))
+
+      ;; Add file field
+      ;; ===============
+
+      (while (search-forward "\n}" nil t)
+	(replace-match (concat ",\n  file = {" filename ".pdf}\n}") nil t))
+      
       (ebib-import)
       (kill-buffer (current-buffer))
     ) 
@@ -680,6 +738,8 @@ one element from `filters-alist'."
 (add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename . nil))
 (add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy . nil))
 (add-to-list 'helm-completing-read-handlers-alist '(LaTeX-environment . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(LaTeX-section . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(bbdb-create . nil))
 (add-to-list 'helm-completing-read-handlers-alist '(TeX-insert-macro . nil))
 
 (global-set-key (kbd "C-SPC")
@@ -696,7 +756,6 @@ one element from `filters-alist'."
     )
   )
 )
-
 
 ;;}}}
 
@@ -738,6 +797,7 @@ one element from `filters-alist'."
 )
 
 ;;{{{ recent stuff
+
 ;; --------------
 (require 'recentf)
 (recentf-mode t)
@@ -788,9 +848,45 @@ one element from `filters-alist'."
 
 ;;}}}
 
+;;{{{ List register
+(require 'list-register)
+(global-set-key (kbd "C-x r v") 'list-register)
+;;}}}
+
 ;;{{{ Magit
 
 (require 'magit)
+
+;;}}}
+
+;;{{{ mmm
+
+(require 'mmm-auto)
+(setq mmm-global-mode 'maybe)
+
+(mmm-add-group 'markdown-py
+               '((markdown-sympycode
+                  :submode python-mode
+                  :face mmm-comment-submode-face
+                  :front ".*\\\\begin{sympycode}"
+                  :back  ".*\\\\end{sympycode}")
+		 (markdown-pycode
+                  :submode python-mode
+                  :face mmm-comment-submode-face
+                  :front ".*\\\\begin{pycode}"
+                  :back  ".*\\\\end{pycode}")
+		 (markdown-sympy
+                  :submode python-mode
+                  :face mmm-comment-submode-face
+                  :front ".*\\\\sympy{"
+                  :back  "}")
+		 (markdown-pylab
+                  :submode python-mode
+                  :face mmm-comment-submode-face
+                  :front ".*\\\\pylab{"
+                  :back  "}")
+                 ))
+(add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-py))
 
 ;;}}}
 
@@ -933,6 +1029,41 @@ one element from `filters-alist'."
 
 (require 'rainbow-delimiters)
 (global-rainbow-delimiters-mode)
+
+;;}}}
+
+;;{{{ Sunrise Commander
+
+(setq dired-omit-files (concat dired-omit-files "\\|^\\...+$"))
+;;(add-hook 'sr-mode-hook (lambda () (dired-omit-mode nil)))
+
+;; Set attributes shown
+
+;; (perms hard-links owner group size date filename)
+;;(setq sr-attributes-display-mask '(nil nil nil nil t t t))
+
+(setq sr-show-file-attributes nil)
+
+;; Listing switches passed to ls
+(setq sr-listing-switches "-laDhgG")
+
+;; Use the passive pane for the viewer. (requires sunrise-popview extension)
+;; popview is incompatible with buttons
+(add-hook 'sr-mode-hook 'sr-popviewer-mode)
+
+(setq sr-popviewer-select-viewer-action
+      (lambda nil (let ((sr-running nil)) (other-window 1))))
+
+(setq sr-windows-default-ratio 50)
+
+;;(setq sr-show-hidden-files t)
+
+(defun sr-mod-keys ()
+  (local-set-key (kbd "<backspace>") 'sr-dired-prev-subdir))
+
+(add-hook 'sr-mode-hook 'sr-mod-keys)
+
+(global-set-key (kbd "<f1>") 'sunrise)
 
 ;;}}}
 

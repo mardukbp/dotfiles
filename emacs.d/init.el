@@ -17,6 +17,9 @@
 (setq themes-dir
       (expand-file-name "themes" site-lisp-dir))
 
+(eval-after-load "desktop"
+  '(add-to-list 'desktop-path (expand-file-name "desktops" user-emacs-directory)))
+
 (add-to-list 'Info-default-directory-list (expand-file-name "ebib" site-lisp-dir))
 
 (add-to-list 'load-path user-emacs-directory)
@@ -33,9 +36,10 @@
 ;; Load config files
 (require 'mb-global)
 (require 'mb-org)
-(eval-after-load 'dired '(require 'mb-dired))
+;;(eval-after-load 'dired '(require 'mb-dired))
 (require 'mb-mu4e)
 (require 'mb-extern)
+(require 'mb-python)
 (require 'mb-scicomp)
 (require 'mb-term)
 (eval-after-load 'cc-mode '(require 'mb-c))

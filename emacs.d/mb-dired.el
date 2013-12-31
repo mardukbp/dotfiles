@@ -5,6 +5,16 @@
   (load "dired-x")
  ))
 
+;; Auto-refresh dired on file change
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+
+;; Auto refresh buffers
+(global-auto-revert-mode 1)
+
+;; Also auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+
 (setq dired-omit-files "^\\...+$")
 (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
 ;; Toggle the view with dired-omit-mode (M-o by default).
@@ -41,7 +51,7 @@
 
 (defun truecrypt ()
   (interactive)
-  (shell-command "truecrypt --mount /home/marduk/Documents/thevault /media/truecrypt1")
+  (shell-command "truecrypt --mount /home/marduk/Personal/archivero_fiscal /media/truecrypt1")
   (dired-x-find-file "/media/truecrypt1")
 )
 
