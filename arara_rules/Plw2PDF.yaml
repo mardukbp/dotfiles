@@ -1,0 +1,10 @@
+!config
+# Config arara for working with pweave
+# author: Marduk Bolaños
+
+identifier: Plw2PDF
+name: Plw2PDF 
+commands:
+    - mv "@{getBasename(file)}.pdf" "@{file}.pdf"
+    - rm "@{getBasename(file)}.tex"
+arguments: []

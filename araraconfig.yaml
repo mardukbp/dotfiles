@@ -1,0 +1,7 @@
+!config
+paths:
+- '@{userhome}/dotfiles/arara_rules'
+
+filetypes:
+- extension: Plw
+  pattern: ^%\s+

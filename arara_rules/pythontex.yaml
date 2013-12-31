@@ -1,0 +1,9 @@
+!config
+# Config arara for working with pweave
+# author: Marduk Bolaños
+
+identifier: pythontex
+name: pythontex
+commands:
+    - <arara> pythontex --interpreter python:python2 @{file}
+arguments: []

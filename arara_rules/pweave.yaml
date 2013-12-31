@@ -1,0 +1,8 @@
+!config
+# Config arara for working with pweave
+# author: Marduk Bolaños
+
+identifier: pweave
+name: pweave
+command: pweave -f tex "@{getBasename(file)}.Plw"
+arguments: []
