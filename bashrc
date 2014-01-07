@@ -220,6 +220,8 @@ zathura () { /usr/bin/zathura "$(realpath "$1")"; }
 
 lnabs () { /usr/bin/ln -s "$(realpath "$1")" "$2"; }
 
+timer() { /usr/bin/utimer -t "$1" && mplayer /usr/share/sounds/freedesktop/stereo/complete.oga; }
+
 # Added by Canopy installer on 2013-07-10
 # VIRTUAL_ENV_DISABLE_PROMPT can be set to '' to make bashprompt show that Canopy is active, otherwise 1
 #VIRTUAL_ENV_DISABLE_PROMPT=1 source /home/marduk/Enthought/Canopy_64bit/User/bin/activate
