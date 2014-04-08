@@ -235,7 +235,7 @@
 
 (setq ebib-preload-bib-files '("~/Library/Artículos/articulos.bib"))
 
-(add-to-list 'ebib-preload-bib-files "~/Library/Tesis/tesis.bib")
+;;(add-to-list 'ebib-preload-bib-files "~/Library/Tesis/tesis.bib")
 
 ;;(setq ebib-keywords-files-alist '())
 
@@ -636,7 +636,7 @@ one element from `filters-alist'."
 
     (with-current-buffer tempbuff
       (ebib-import)
-      ;;(kill-buffer (current-buffer))
+      (kill-buffer (current-buffer))
 )))
 
 (require 'mm-url)
@@ -1032,9 +1032,16 @@ one element from `filters-alist'."
 
 ;;}}}
 
+;;{{{ Session
+
+(require 'session)
+(add-hook 'after-init-hook 'session-initialize)
+
+;;}}}
+
 ;;{{{ Sunrise Commander
 
-(setq dired-omit-files (concat dired-omit-files "\\|^\\...+$"))
+;(setq dired-omit-files (concat dired-omit-files "\\|^\\...+$"))
 ;;(add-hook 'sr-mode-hook (lambda () (dired-omit-mode nil)))
 
 ;; Set attributes shown
@@ -1045,14 +1052,16 @@ one element from `filters-alist'."
 (setq sr-show-file-attributes nil)
 
 ;; Listing switches passed to ls
-(setq sr-listing-switches "-laDhgG")
+(setq sr-listing-switches "-lDhgG") ;;a
 
 ;; Use the passive pane for the viewer. (requires sunrise-popview extension)
 ;; popview is incompatible with buttons
-(add-hook 'sr-mode-hook 'sr-popviewer-mode)
+;(add-hook 'sr-mode-hook 'sr-popviewer-mode)
 
-(setq sr-popviewer-select-viewer-action
-      (lambda nil (let ((sr-running nil)) (other-window 1))))
+(setq sr-popviewer-enabled t)
+
+;(setq sr-popviewer-select-viewer-action
+;      (lambda nil (let ((sr-running nil)) (other-window 1))))
 
 (setq sr-windows-default-ratio 50)
 

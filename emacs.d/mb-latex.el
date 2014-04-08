@@ -14,6 +14,9 @@
 ;; Fold mode
 (add-hook 'LaTeX-mode-hook 'TeX-fold-mode)
 
+(setq default-input-method 'latin-1-prefix)
+(add-hook 'LaTeX-mode-hook 'toggle-input-method)
+
 ;;{{{ Compile LaTeX
 
 (setq TeX-PDF-mode t)
@@ -49,7 +52,7 @@
     (backward-sexp)
      (let ((beg (point)))
        (mark-sexp)
-       (copy-to-register register beg end)
+       (copy-to-register register (+ beg 1) (- end 1))
        (goto-char end)
        )))
 
@@ -57,6 +60,8 @@
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
 (setq reftex-plug-into-auctex t)
+
+(setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresource"))
 
 ;; source: http://ergoemacs.org/emacs/modernization_mark-word.html
 (defun select-text-in-quote ()
@@ -103,7 +108,7 @@ Delimiters are paired characters:
 
 ;;}}}
 
-;; Auto-reload document in order get support for packages
+;; Auto-reload document in order to get support for packages
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 
@@ -128,43 +133,46 @@ Delimiters are paired characters:
 ;;(load-file (expand-file-name "tex/xetex-symbols-keymap.el" user-emacs-directory))
 ;;(load-file (expand-file-name "tex/xetex-greek-keymap.el" user-emacs-directory))
 
+;; Disable insert key
+(global-set-key (kbd "<insert>") '(lambda() (interactive) ()))
+
 (defun TeX-en-us-kmap ()
   (local-set-key (kbd "<f1>") 'LaTeX-math-mark-sexp-register-save)
   (local-set-key (kbd "<f2>") 'list-register) ;; requires list-register
-  (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
-  (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
-  (local-set-key (kbd "6") '(lambda () (interactive) (insert "^")))
-  (local-set-key (kbd "7") '(lambda () (interactive) (insert "&")))
-  (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
-  (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
-  (local-set-key (kbd "=") '(lambda () (interactive) (insert "+")))
+  ;; (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
+;;   (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
+;;   (local-set-key (kbd "6") '(lambda () (interactive) (insert "^")))
+;;   (local-set-key (kbd "7") '(lambda () (interactive) (insert "&")))
+;;   (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
+;;   (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
+;;   (local-set-key (kbd "=") '(lambda () (interactive) (insert "+")))
   
-  (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
-  (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
-  (local-set-key (kbd "^") '(lambda () (interactive) (insert "6")))
-  (local-set-key (kbd "&") '(lambda () (interactive) (insert "7")))
-  (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
-  (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
-  (local-set-key (kbd "+") '(lambda () (interactive) (insert "=")))
+;;   (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
+;;   (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
+;;   (local-set-key (kbd "^") '(lambda () (interactive) (insert "6")))
+;;   (local-set-key (kbd "&") '(lambda () (interactive) (insert "7")))
+;;   (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
+;;   (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
+;;   (local-set-key (kbd "+") '(lambda () (interactive) (insert "=")))
 )
 
 (defun TeX-es-latam-kmap ()
 
   (local-set-key (kbd "<f1>") 'LaTeX-math-mark-sexp-register-save)
   (local-set-key (kbd "<f2>") 'list-register) ;; requires list-register
-  (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
-  (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
-  (local-set-key (kbd "6") '(lambda () (interactive) (insert "&")))
-  (local-set-key (kbd "8") '(lambda () (interactive) (insert "(")))
-  (local-set-key (kbd "9") '(lambda () (interactive) (insert ")")))
-  (local-set-key (kbd "0") '(lambda () (interactive) (insert "=")))
+  ;; (local-set-key (kbd "4") '(lambda () (interactive) (insert "$")))
+  ;; (local-set-key (kbd "5") '(lambda () (interactive) (insert "%")))
+  ;; (local-set-key (kbd "6") '(lambda () (interactive) (insert "&")))
+  ;; (local-set-key (kbd "8") '(lambda () (interactive) (insert "(")))
+  ;; (local-set-key (kbd "9") '(lambda () (interactive) (insert ")")))
+  ;; (local-set-key (kbd "0") '(lambda () (interactive) (insert "=")))
   
-  (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
-  (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
-  (local-set-key (kbd "&") '(lambda () (interactive) (insert "6")))
-  (local-set-key (kbd "(") '(lambda () (interactive) (insert "8")))
-  (local-set-key (kbd ")") '(lambda () (interactive) (insert "9")))
-  (local-set-key (kbd "=") '(lambda () (interactive) (insert "0")))
+  ;; (local-set-key (kbd "$") '(lambda () (interactive) (insert "4")))
+  ;; (local-set-key (kbd "%") '(lambda () (interactive) (insert "5")))
+  ;; (local-set-key (kbd "&") '(lambda () (interactive) (insert "6")))
+  ;; (local-set-key (kbd "(") '(lambda () (interactive) (insert "8")))
+  ;; (local-set-key (kbd ")") '(lambda () (interactive) (insert "9")))
+  ;; (local-set-key (kbd "=") '(lambda () (interactive) (insert "0")))
 )
 
 (add-hook 'LaTeX-mode-hook 'TeX-es-latam-kmap)

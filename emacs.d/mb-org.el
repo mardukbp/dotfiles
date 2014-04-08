@@ -14,8 +14,7 @@
 ;; (insert "Scratch buffer with org-mode.\n\n")
 (org-mode)
 
-(setq default-input-method 'latin-1-prefix)
-(add-hook 'org-mode-hook 'toggle-input-method)
+;;(add-hook 'org-mode-hook 'toggle-input-method)
 
 ;; My org files
 (setq org-directory (expand-file-name (file-name-as-directory "~/Org/")))
@@ -25,14 +24,17 @@
 ;;(setq org-mobile-files (cons (expand-file-name "notes.org" org-directory)))
 
 ;; (add-hook 'org-mode-hook 'turn-on-font-lock)
-;(add-hook 'org-mode-hook 'emph-bold)
-;(add-hook 'org-mode-hook 'emph-italics)
+;;(add-hook 'org-mode-hook 'emph-bold)
+;;(add-hook 'org-mode-hook 'emph-italics)
 
 ;;}}}
 
 ;;{{{ Text editing
 
 (add-hook 'org-mode-hook 'visual-line-mode)
+
+(setq default-input-method 'latin-1-prefix)
+(add-hook 'org-mode-hook 'toggle-input-method)
 
 ;;}}}
 

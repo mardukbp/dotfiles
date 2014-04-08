@@ -23,19 +23,19 @@
 ;; (setq py-smart-indentation t)
 
 ;; ; pymacs
-(setq pymacs-dir (expand-file-name "Pymacs" site-lisp-dir))
-(add-to-list 'load-path pymacs-dir)
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(autoload 'pymacs-autoload "pymacs")
-(require 'pymacs)
+;; (setq pymacs-dir (expand-file-name "Pymacs" site-lisp-dir))
+;; (add-to-list 'load-path pymacs-dir)
+;; (autoload 'pymacs-apply "pymacs")
+;; (autoload 'pymacs-call "pymacs")
+;; (autoload 'pymacs-eval "pymacs" nil t)
+;; (autoload 'pymacs-exec "pymacs" nil t)
+;; (autoload 'pymacs-load "pymacs" nil t)
+;; (autoload 'pymacs-autoload "pymacs")
+;; (require 'pymacs)
 
 ;; ; ropemacs
-(setq pymacs-load-path '("~/emacs.d/site-lisp/ropemacs"))
+;; (setq pymacs-load-path '("~/emacs.d/site-lisp/ropemacs"))
 
-(pymacs-load "ropemacs" "rope-")
+;; (pymacs-load "ropemacs" "rope-")
 
 (provide 'mb-python)

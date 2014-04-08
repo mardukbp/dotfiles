@@ -27,7 +27,8 @@
   'interactive)
 
 (global-set-key (kbd "C-c u") 'copy-from-above-command)
-;;(global-set-key (kbd "C-<tab>") 'indent-relative)
+
+(global-set-key (kbd "C-<tab>") 'indent-relative)
 
 ;;}}}
 
