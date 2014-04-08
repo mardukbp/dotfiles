@@ -1,6 +1,7 @@
 % vim: set foldmethod=marker:
 % vim: set foldmarker={{{{,}}}}:
 
+% Configurar el lenguaje usando una opción key=val
 \RequirePackage[spanish, mexico]{babel}
 \RequirePackage{
     kvoptions,
@@ -9,15 +10,40 @@
     amssymb,
     amsfonts,
     amsbsy,
-    booktabs,
+    nicefrac, % fractions 1/2
+    breqn,    % auto-break long equations
+    booktabs, % nice tables
     float,
-    todonotes
+    graphicx,
+    multicol,
+    lscape,   % landscape mode page-wise
+    %appendix
+    pdfpages
 }
-\RequirePackage[italicdiff]{physics}
-\RequirePackage[labelfont=bf]{caption}
+\RequirePackage[backend=biber, url=false, doi=false, isbn=false, date=year, maxnames=1, style=nature]{biblatex}
+\RequirePackage[textsize=small]{todonotes}
+\RequirePackage[italicdiff]{physics}   % QM notation and diff. operators
+\RequirePackage[labelfont=bf]{caption} % nice captions
 \RequirePackage[utf8]{inputenc}
+\RequirePackage[mathscr]{eucal} % Euler script math fonts
 %\RequirePackage[]{hyperref}
 %\RequirePackage[]{fancyhdr}
+
+%% Localization
+
+\DefineBibliographyStrings{spanish}{%
+    andothers = {et. al.},
+    andmore = {et. al.},
+    bibliography = {Referencias},
+}
+
+\addto\captionsspanish{%
+    \renewcommand{\contentsname}{Contenido}
+}
+
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
 
 %{{{{ Package options
 
@@ -55,6 +81,12 @@ from sympy import *
 
 %{{{{ Simbolos
 
+% Lie algebras
+\newcommand{\sun}[1]{\mathfrak{su}(#1)}
+\newcommand{\son}[1]{\mathfrak{so}(#1)}
+\newcommand{\sln}[1]{\mathfrak{sl}(#1)}
+\newcommand{\gln}[1]{\mathfrak{gl}(#1)}
+
 %% Requires amsbsy
 % greek vector
 \newcommand{\gvec}[1]{\boldsymbol{#1}}
@@ -63,6 +95,8 @@ from sympy import *
 \newcommand{\vect}[1]{\mathbf{#1}}
 
 % Unit vector
+\newcommand{\uvec}[1]{\hat{#1}}
+
 \newcommand{\unit}[1]{\hat{\mathbf{#1}}}
 
 % Blackboard Matrix
@@ -107,6 +141,8 @@ from sympy import *
 %% Operadores
 \DeclareMathOperator{\e}{e}
 
+\newcommand{\set}[1]{\{#1\}}
+
 %% Incrementamos la separacion entre los renglones en una matriz de amsmath
 %\renewcommand\arraystretch{1.5}
 
@@ -122,6 +158,12 @@ from sympy import *
 %}}}}
 
 %{{{{ Quantum Mechanics
+
+% Set of real numbers
+\newcommand{\Reals}{\mathbb{R}}
+
+% Set of complex numbers
+\newcommand{\Complex}{\mathbb{C}}
 
 % Inverse operator
 \newcommand{\inv}[1]{#1^{-1}}
