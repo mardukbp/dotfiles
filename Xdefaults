@@ -40,7 +40,7 @@ URxvt*font:                 xft:Monospace:pixelsize=18
 URxvt.scrollstyle:          plain
 
 URxvt*scrollBar_right:      true
-URxvt*saveLines:            12000
+URxvt*saveLines:            22000
 
 URxvt.iso14755:             false
 
