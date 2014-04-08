@@ -8,12 +8,6 @@ webjumps.g = webjumps.duckduckgo;
 //Kindle Reader
 define_webjump("kindle","https://read.amazon.com/");
 
-// IPython Notebook wikiphysics
-define_webjump("wip","http://localhost:8889");
-
-// IPython Notebook
-define_webjump("pynb","http://localhost:8888");
-
 // Zotero translator
 //define_webjump("zotero","javascript:var%20d=document,s=d.createElement('script');s.src='https://raw.github.com/zotero/translators/master/arXiv.org.js';(d.body?d.body:d.documentElement).appendChild(s);void(0);");
 
@@ -29,6 +23,8 @@ define_webjump("imdb", "http://www.imdb.com/find?s=all&q=%s");
 define_webjump("you", "http://www.youtube.com/results?search_query=%s&page={startPage?}&utm_source=opensearch");
 
 define_webjump("amz", "http://www.amazon.com/s/ref=nb_sb_ss_i_4_13?url=search-alias%3Daps&field-keywords=%s&sprefix=comfort+curve%2Caps%2C264");
+
+define_webjump("gmx", "https://www.google.com.mx/#q=%s&tbs=ctr:countryMX&cr=countryMX")
 
 define_webjump("img", "http://www.google.com/images?q=%s", $alternative = "http://www.google.com/imghp");
 
