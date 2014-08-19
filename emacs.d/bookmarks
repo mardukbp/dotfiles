@@ -2,31 +2,26 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Downloads"
+(("Org"
+ (filename . "~/Org/")
+ (front-context-string . "agenda\n  -rw-r--")
+ (rear-context-string . "59 Apr  7 14:35 ")
+ (position . 104))
+("~"
+ (filename . "~/")
+ (front-context-string . "Library\n  drwxr-")
+ (rear-context-string . "0K Jan 30 15:25 ")
+ (position . 885))
+("Calibre Library"
+ (filename . "~/Library/Libros/Calibre Library/")
+ (front-context-string . "A. B. Migdal\n  d")
+ (rear-context-string . "0K May 21  2013 ")
+ (position . 179))
+("Downloads"
  (filename . "~/Downloads/")
  (front-context-string . "./\n  drwxr-xr-x ")
  (rear-context-string . "2K Jul  1 13:52 ")
  (position . 112))
-("Archivos"
- (filename . "~/Documents/Archivos/")
- (front-context-string . "./\n  drwxr-xr-x ")
- (rear-context-string . "0K May 23 01:36 ")
- (position . 121))
-("todo"
- (filename . "~/Org/gtd.org")
- (front-context-string . "* Pendientes\n\n**")
- (rear-context-string)
- (position . 1))
-("Tesis_QT"
- (filename . "~/Documents/Tesis_QT/")
- (front-context-string . "drwxr-xr-x 14  4")
- (rear-context-string . "ble 110060900\n  ")
- (position . 88))
-("org-capture-last-stored"
- (filename . "~/Documents/org/science+tech.org")
- (front-context-string . "** White dwarf s")
- (rear-context-string . "=ff8980aa20[20]\n")
- (position . 15603))
 ("dotfiles"
  (filename . "~/dotfiles/")
  (front-context-string . "conkerorrc/\n  dr")
@@ -42,16 +37,6 @@
  (front-context-string . "calccard.pdf\n  -")
  (rear-context-string . "2K Jan  2 20:05 ")
  (position . 205))
-("org"
- (filename . "/media/Archivos/Documents/org")
- (front-context-string . "arch.txt\n  -rw-r")
- (rear-context-string . "4K Jul 11  2012 ")
- (position . 148))
-("home"
- (filename . "~/")
- (front-context-string . "Anki/\n  drwxr-xr")
- (rear-context-string . "0K Apr 13 21:16 ")
- (position . 102))
 ("bashrc"
  (filename . "~/.bashrc")
  (front-context-string . "#\n# ~/.bashrc\n#\n")
@@ -59,7 +44,7 @@
  (position . 1))
 ("media"
  (filename . "/media/")
- (front-context-string . "Archivos/\n  drwx")
- (rear-context-string . "2K May  1 12:57 ")
- (position . 95))
+ (front-context-string)
+ (rear-context-string . "0K Apr 10  2013 ")
+ (position . 94))
 )

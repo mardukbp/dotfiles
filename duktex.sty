@@ -1,11 +1,41 @@
 % vim: set foldmethod=marker:
 % vim: set foldmarker={{{{,}}}}:
 
-% Configurar el lenguaje usando una opción key=val
-\RequirePackage[spanish, mexico]{babel}
+%{{{{ Package options
+
+\RequirePackage{kvoptions}
+
+\SetupKeyvalOptions{
+  family=DUK,
+  prefix=DUK@
+}
+
+%\DeclareBoolOption{python}
+\DeclareBoolOption{spanish}
+\DeclareBoolOption{english}
+
+\ProcessKeyvalOptions*
+
+\ifDUK@spanish
+    \PassOptionsToPackage{spanish,mexico,es-noindentfirst}{babel}
+\fi
+
+\ifDUK@english
+    \PassOptionsToPackage{english}{babel}
+\fi
+
+%\ifDUK@python
+%\RequirePackage{pythontex}
+%\begin{pythontexcustomcode}{sympy}
+%from matrix2latex import matrix2latex
+%from sympy.abc import *
+%from sympy import *
+%\end{pythontexcustomcode}
+%\fi
+
+%}}}}
+
 \RequirePackage{
-    kvoptions,
-    ifthen,
     amsmath,
     amssymb,
     amsfonts,
@@ -13,57 +43,48 @@
     nicefrac, % fractions 1/2
     breqn,    % auto-break long equations
     booktabs, % nice tables
-    float,
+    graphics,
+    float,    % position H
     graphicx,
     multicol,
     lscape,   % landscape mode page-wise
     %appendix
-    pdfpages
+    pdfpages  % Insert pages from PDF 
 }
-\RequirePackage[backend=biber, url=false, doi=false, isbn=false, date=year, maxnames=1, style=nature]{biblatex}
+
+\RequirePackage{babel}
+\RequirePackage[utf8]{inputenc}
 \RequirePackage[textsize=small]{todonotes}
 \RequirePackage[italicdiff]{physics}   % QM notation and diff. operators
 \RequirePackage[labelfont=bf]{caption} % nice captions
-\RequirePackage[utf8]{inputenc}
 \RequirePackage[mathscr]{eucal} % Euler script math fonts
 %\RequirePackage[]{hyperref}
 %\RequirePackage[]{fancyhdr}
 
-%% Localization
+%{{{{ BibLaTeX 
 
-\DefineBibliographyStrings{spanish}{%
-    andothers = {et. al.},
-    andmore = {et. al.},
-    bibliography = {Referencias},
-}
-
-\addto\captionsspanish{%
-    \renewcommand{\contentsname}{Contenido}
-}
-
-
-\newcommand{\red}[1]{\textcolor{red}{#1}}
-\newcommand{\blue}[1]{\textcolor{blue}{#1}}
-
-%{{{{ Package options
-
-\SetupKeyvalOptions{
-  family=DUK,
-  prefix=DUK@
-}
-
-\DeclareBoolOption{python}
+\RequirePackage[backend=biber, url=false, doi=false, isbn=false, date=year, maxnames=1, style=nature]{biblatex}
 
 \ProcessKeyvalOptions*
 
-\ifDUK@python
-\RequirePackage{pythontex}
-\begin{pythontexcustomcode}{sympy}
-from matrix2latex import matrix2latex
-from sympy.abc import *
-from sympy import *
-\end{pythontexcustomcode}
+\ifDUK@spanish
+    \DefineBibliographyStrings{spanish}{%
+        andothers = {et. al.},
+        andmore = {et. al.},
+        bibliography = {Referencias},
+    }
+
+    \addto\captionsspanish{%
+        \renewcommand{\contentsname}{Contenido}
+    }
 \fi
+
+%}}}}
+
+%{{{{ Colors
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
 
 %}}}}
 
@@ -78,6 +99,21 @@ from sympy import *
 %}}}}
 
 %{{{{ Math macros
+
+% Sharper angle brackets
+% http://math.berkeley.edu/~gbergman/misc/hacks/langl_rangl.html
+
+\newcommand{\langl}{\begin{picture}(4.5,7)
+\linethickness{0.2mm}
+\put(1.1,2.5){\rotatebox{60}{\line(1,0){5.5}}}
+\put(1.1,2.5){\rotatebox{300}{\line(1,0){5.5}}}
+\end{picture}}
+
+\newcommand{\rangl}{\begin{picture}(4.5,7)
+\linethickness{0.2mm}
+\put(.9,2.5){\rotatebox{120}{\line(1,0){5.5}}}
+\put(.9,2.5){\rotatebox{240}{\line(1,0){5.5}}}
+\end{picture}}
 
 %{{{{ Simbolos
 
@@ -199,7 +235,7 @@ from sympy import *
 \newcommand{\Lkbra}[2]{\Lket{#1}\Lbra{#2}}
 
 % Liouville space bra
-\newcommand{\Lbra}[1]{\ensuremath{\left( #1 \right|}}
+\newcommand{\Lbra}[1]{\ensuremath{\bigl( #1 \bigr|}}
 
 % Seccion transversal de colision diferencial
 \newcommand{\dcs}{\frac{d\sigma}{d\Omega}}

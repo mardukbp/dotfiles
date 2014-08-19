@@ -214,6 +214,8 @@
 
 ;;{{{ Config
 
+(setq ebib-filename-separator ":")
+
 (setq ebib-multiline-major-mode 'markdown-mode)
 
 (add-to-list 'Info-default-directory-list (expand-file-name site-lisp-dir "ebib"))
@@ -225,11 +227,17 @@
 
 (setq thesis-dir "~/Library/Tesis")
 
+(setq zotero-dir "~/Zotero")
+
+(define-key ebib-index-mode-map "f" (lambda () (interactive) (ebib-view-file 1)))
+
 (add-to-list 'ebib-file-search-dirs (expand-file-name "arXiv" papers-dir))
 
 (add-to-list 'ebib-file-search-dirs (expand-file-name "pdf" papers-dir))
 
 (add-to-list 'ebib-file-search-dirs thesis-dir)
+
+(add-to-list 'ebib-file-search-dirs zotero-dir)
 
 (setq ebib-file-associations '(("pdf" . "zathura") ("djvu" . "zathura")))
 
@@ -688,6 +696,58 @@ one element from `filters-alist'."
 
 ;;}}}
 
+;;{{{ elfeed
+
+(require 'elfeed)
+
+(global-set-key [f4] 'elfeed)
+
+(setq elfeed-feeds
+      '(("http://feeds.aps.org/rss/recent/pra.xml" pra)
+	("http://feeds.aps.org/rss/recent/prl.xml" prl)
+))
+
+(define-key elfeed-search-mode-map "U" 'elfeed-update)
+
+(setq elfeed-search-trailing-width 5)
+(setq elfeed-search-title-max-width 200)
+
+(defadvice elfeed-search-update (before nullprogram activate)
+  (let ((pra (elfeed-db-get-feed "http://feeds.aps.org/rss/recent/pra.xml"))
+	(prl (elfeed-db-get-feed "http://feeds.aps.org/rss/recent/prl.xml")))
+    (setf (elfeed-feed-title pra) "")
+    (setf (elfeed-feed-title prl) "")
+))
+
+(add-hook 'elfeed-new-entry-hook
+          (elfeed-make-tagger :entry-title "entangle"
+                              :add 'entangle))
+
+(add-hook 'elfeed-new-entry-hook
+          (elfeed-make-tagger :entry-title "dissipat"
+                              :add 'dissipat))
+
+
+;; http://nullprogram.com/blog/2013/11/26/
+(defvar my-elfeed-counter 0)
+(defun elfeed-search-filter-toggle ()
+  (interactive)
+  (let ((filters
+	 '(
+	   "@4-weeks-ago +unread"
+	   "@4-weeks-ago +unread entangle"
+	   "@4-weeks-ago +unread dissipati"
+	   ))
+	)
+    (setq current-counter (+ my-elfeed-counter 1))
+    (setq my-elfeed-counter (mod current-counter (length filters)))
+    (elfeed-search-set-filter (nth my-elfeed-counter filters))))
+
+(define-key elfeed-search-mode-map "c" 'elfeed-search-filter-toggle)
+
+
+;;}}}
+
 ;;{{{ Expand region
 ;; https://github.com/magnars/expand-region.el
 
@@ -736,6 +796,9 @@ one element from `filters-alist'."
 ;; Disable helm for this commands
 (add-to-list 'helm-completing-read-handlers-alist '(dired-create-directory . nil))
 (add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(dired . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(find-file . nil))
+(add-to-list 'helm-completing-read-handlers-alist '(mu4e-view-save-attachment . nil))
 (add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy . nil))
 (add-to-list 'helm-completing-read-handlers-alist '(LaTeX-environment . nil))
 (add-to-list 'helm-completing-read-handlers-alist '(LaTeX-section . nil))
@@ -849,8 +912,8 @@ one element from `filters-alist'."
 ;;}}}
 
 ;;{{{ List register
-(require 'list-register)
-(global-set-key (kbd "C-x r v") 'list-register)
+;(require 'list-register)
+;(global-set-key (kbd "C-x r v") 'list-register)
 ;;}}}
 
 ;;{{{ Magit
@@ -864,29 +927,48 @@ one element from `filters-alist'."
 (require 'mmm-auto)
 (setq mmm-global-mode 'maybe)
 
-(mmm-add-group 'markdown-py
-               '((markdown-sympycode
-                  :submode python-mode
-                  :face mmm-comment-submode-face
-                  :front ".*\\\\begin{sympycode}"
-                  :back  ".*\\\\end{sympycode}")
-		 (markdown-pycode
-                  :submode python-mode
-                  :face mmm-comment-submode-face
-                  :front ".*\\\\begin{pycode}"
-                  :back  ".*\\\\end{pycode}")
-		 (markdown-sympy
-                  :submode python-mode
-                  :face mmm-comment-submode-face
-                  :front ".*\\\\sympy{"
-                  :back  "}")
-		 (markdown-pylab
-                  :submode python-mode
-                  :face mmm-comment-submode-face
-                  :front ".*\\\\pylab{"
-                  :back  "}")
-                 ))
-(add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-py))
+;; (mmm-add-group 'markdown-py
+;;                '((markdown-sympycode
+;;                   :submode python-mode
+;;                   :face mmm-comment-submode-face
+;;                   :front ".*\\\\begin{sympycode}"
+;;                   :back  ".*\\\\end{sympycode}")
+;; 		 (markdown-pycode
+;;                   :submode python-mode
+;;                   :face mmm-comment-submode-face
+;;                   :front ".*\\\\begin{pycode}"
+;;                   :back  ".*\\\\end{pycode}")
+;; 		 (markdown-sympy
+;;                   :submode python-mode
+;;                   :face mmm-comment-submode-face
+;;                   :front ".*\\\\sympy{"
+;;                   :back  "}")
+;; 		 (markdown-pylab
+;;                   :submode python-mode
+;;                   :face mmm-comment-submode-face
+;;                   :front ".*\\\\pylab{"
+;;                   :back  "}")
+;;                  ))
+
+;; (add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-py))
+
+
+(mmm-add-group 'markdown-tex
+               '((markdown-equation
+                  :submode latex-mode
+		  :face mmm-declaration-submode-face
+                  :front "^\\\\begin{equation\\*}$"
+                  :back  "^\\\\end{equation\\*}$")
+		 (markdown-align
+		  :submode latex-mode
+		  :face mmm-declaration-submode-face
+		  :front "^\\\\begin{align\\*}$"
+		  :back  "^\\\\end{align\\*}$")
+		 ))
+
+(add-to-list 'mmm-mode-ext-classes-alist
+'(markdown-mode "\\.md\\'" markdown-tex))
+
 
 ;;}}}
 
@@ -912,6 +994,21 @@ one element from `filters-alist'."
 ;;             (auto-fill-mode 1)
 ;;             (if (eq window-system 'x)
 ;; 		(font-lock-mode 1))))
+
+;;}}}
+
+;;{{{ OpenWith
+(setq openwith-associations '(
+("\\.pdf\\'" "zathura" (file))
+("\\.djvu\\'" "zathura" (file))
+))
+;;}}}
+
+;;{{{ Pandoc-mode
+
+(add-hook 'markdown-mode-hook 'turn-on-pandoc)
+(setq default-input-method 'latin-9-prefix)
+(add-hook 'markdown-mode-hook 'toggle-input-method)
 
 ;;}}}
 
@@ -1027,15 +1124,15 @@ one element from `filters-alist'."
 
 ;;{{{ Rainbow delimiters
 
-(require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
+;(require 'rainbow-delimiters)
+;(global-rainbow-delimiters-mode)
 
 ;;}}}
 
 ;;{{{ Session
 
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
+;(require 'session)
+;(add-hook 'after-init-hook 'session-initialize)
 
 ;;}}}
 

@@ -10,7 +10,7 @@
 
 ;;{{{ Org mode (experimental as of 0.9.9.5)
 
-;; (require 'org-mu4e)
+(require 'org-mu4e)
 ;; (defalias 'org-mail 'org-mu4e-compose-org-mode)
 
 ;; convert org mode to HTML automatically
@@ -57,18 +57,24 @@
   mu4e-confirm-quit nil
   mu4e-use-fancy-chars t
 
+  mu4e-compose-signature-auto-include nil
+
 )
 
 ;;}}}
 
-;;{{{ Bookmarks in main view
+;;{{{ bookmarks in main view
 ;; ----------------------------
 
 (setq mu4e-bookmarks
-       '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
+      '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
           ("date:today..now"                  "Today's messages"     ?t)
           ("date:2d..now"                     "Last 2 days"          ?r)
 	  ("flag:flagged"                     "Flagged messages"     ?f)
+	  ("from:kurzweilai"                  "Kurzweil"             ?k)
+	  ("from:phys"                        "Phys.org"             ?o)
+	  ("from:science"                     "Science"              ?s)
+	  ("subject:this week in physics AND NOT science" "APS Physics" ?p)
 	)
 )
 
@@ -125,7 +131,7 @@
 ;; fields to show in message view
 (setq mu4e-view-fields '(:from :to :cc :subject :date :attachments))
 
-(setq mu4e-view-show-images t)
+(setq mu4e-view-show-images nil)
 
 (setq
   ;;mu4e-html2text-command "pandoc -f html -t org"
@@ -150,7 +156,6 @@
   (let ((from (mu4e-field-at-point :from)))  
     (bbdb-create-internal (car (car from)) nil (cdr (car from)) nil nil nil))
 )
-
 
 ;;}}}
 
@@ -178,7 +183,7 @@ Uses ido to select the contact from all those present in the database."
                 (split-string (shell-command-to-string "mu cfind --muhome ~/Personal/mail/mu --format=csv")
                               "\n"))))))
 
-(define-key message-mode-map (kbd "C-c C-f c") 'jmg/ido-select-recipient)
+;;(define-key message-mode-map (kbd "TAB") 'jmg/ido-select-recipient)
 
 (setq message-send-mail-function 'message-send-mail-with-sendmail
       sendmail-program "/usr/bin/msmtp"
@@ -207,7 +212,7 @@ Uses ido to select the contact from all those present in the database."
 
 (setq
   ;; limit address autocompletion to messages received since given date
-  mu4e-compose-complete-only-after "2013-01-01"
+  mu4e-compose-complete-only-after nil
   ;; limit address autocompletion to messages addressed only to me
   mu4e-compose-complete-only-personal t
 )

@@ -5,3 +5,5 @@ paths:
 filetypes:
 - extension: Plw
   pattern: ^%\s+
+- extension: md
+  pattern: ^%\s+

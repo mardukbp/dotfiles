@@ -1,7 +1,7 @@
 ;; -*- mode: emacs-lisp -*-
 
 ;; Ebib filters file
-;; Saved on 2014.04.02 15:17
+;; Saved on 2014.08.18 17:42
 
 (("QT+group"
   (and

@@ -1,7 +1,8 @@
 % vim: ft=tex
+% arara: pdflatex
 
 \pdfminorversion=4
-\documentclass[$if(fontsize)$$fontsize$,$endif$$if(handout)$handout,$endif$$if(beamer)$ignorenonframetext,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(handout)$handout,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
 $if(theme)$
 \usetheme{$theme$}
 $endif$
@@ -17,6 +18,8 @@ $if(outertheme)$
 $endif$
 
 \setbeamertemplate{navigation symbols}{}
+
+\renewcommand{\footnoterule}{}
 
 % Typeset math with Computer Modern
 \renewcommand\mathfamilydefault{\rmdefault}
@@ -52,12 +55,10 @@ $endif$
 \end{beamercolorbox}
 }
 
-\usepackage{breqn}
-\usepackage{physics}
+\usepackage[$babel-lang$]{duktex}
 \usepackage[]{color}
 \usepackage{xcolor}
 \usepackage{multirow}
-\usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
 \ifxetex
@@ -175,8 +176,8 @@ $endif$
 $if(verbatim-in-note)$
 \VerbatimFootnotes % allows verbatim text in footnotes
 $endif$
-$if(lang)$
-\usepackage[$babel-lang$]{babel}
+$if(portada)$
+\usepackage{pdfpages}
 $endif$
 $for(header-includes)$
 $header-includes$
@@ -203,6 +204,15 @@ $if(titlegraphic)$
 $endif$
 
 \begin{document}
+
+$if(portada)$
+{
+    \setbeamercolor{background canvas}{bg=}
+    \includepdf{$portada$}
+}
+$endif$
+
+
 $if(title)$
 \frame[plain]{\titlepage}
 $endif$
@@ -210,14 +220,14 @@ $endif$
 
 $for(include-before)$
 $include-before$
-
 $endfor$
+
 $if(toc)$
 \begin{frame}{$toctitle$}
 \tableofcontents[hideallsubsections]
 \end{frame}
-
 $endif$
+
 $body$
 
 $if(natbib)$

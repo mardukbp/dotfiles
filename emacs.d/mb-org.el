@@ -44,26 +44,29 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-(global-set-key (kbd "<f4>") 'org-capture)
+(global-set-key (kbd "<f5>") 'org-capture)
+(global-set-key (kbd "C-c e") 'agenda-export)
+
 ;;(global-set-key "\C-cc" 'org-capture)
 ;(setq org-log-done t)
 ;(setq org-src-fontify-natively t)
 
-(defun org-en-us-kmap ()
-  (local-set-key (kbd "8") '(lambda () (interactive) (insert "*")))
-  (local-set-key (kbd "*") '(lambda () (interactive) (insert "8")))
-)
+;; (defun org-en-us-kmap ()
+;;   (local-set-key (kbd "8") '(lambda () (interactive) (insert "*")))
+;;   (local-set-key (kbd "*") '(lambda () (interactive) (insert "8")))
+;; )
 
-(defun org-es-latam-kmap ()
-  (local-set-key (kbd "+") '(lambda () (interactive) (insert "*")))
-  (local-set-key (kbd "*") '(lambda () (interactive) (insert "+")))
-)
+;; (defun org-es-latam-kmap ()
+;;   (local-set-key (kbd "+") '(lambda () (interactive) (insert "*")))
+;;   (local-set-key (kbd "*") '(lambda () (interactive) (insert "+")))
+;; )
 
-(add-hook 'org-mode-hook 'org-es-latam-kmap)
+;; (add-hook 'org-mode-hook 'org-es-latam-kmap)
 
 ;;}}}
 
 ;;{{{ Capture templates
+
 ;; ------------------
 
 (setq org-default-notes-file (concat org-directory "notes.org"))
@@ -201,6 +204,15 @@
 
 ;;}}}
 
+;;{{{ Org agenda
+
+(defun agenda-export ()
+  (interactive)
+  (call-process "~/bin/agenda_export.sh" nil nil nil)
+)
+
+;;}}}
+
 ;;{{{ Org-Babel
 
 (org-babel-do-load-languages
@@ -317,7 +329,7 @@ a sound to be played"
 ;; Browser
 ;; ---------
 (setq browse-url-browser-function (quote browse-url-generic))
-(setq browse-url-generic-program "conkeror")
+(setq browse-url-generic-program "firefox")
 
 ;;{{{ Open with
 ;; -------------

@@ -14,7 +14,7 @@
 ;; Fold mode
 (add-hook 'LaTeX-mode-hook 'TeX-fold-mode)
 
-(setq default-input-method 'latin-1-prefix)
+(setq default-input-method 'latin-9-prefix)
 (add-hook 'LaTeX-mode-hook 'toggle-input-method)
 
 ;;{{{ Compile LaTeX
@@ -24,16 +24,19 @@
 ;; Ask no questions
 (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-force "arara")))
 
-;; Use arara
+;; Support for .Plw
 (eval-after-load "tex"
-  '(add-to-list 'TeX-expand-list '("%(ppp-file-name)" (lambda () (concat "\"" (car (split-string (buffer-file-name) "\\.Plw")) "\"")))))
+  '(add-to-list 'TeX-expand-list '("%(ppp-file-name)" (lambda () (concat "\"" (car (split-string (buffer-file-name) "\\.Plw")) "\""))))
+)
 
 (eval-after-load "tex"
   '(add-to-list 'TeX-command-list '("arara" "arara -v %(ppp-file-name)" TeX-run-command nil t :help "Run arara on TeX file")))
 
 ;; Support for Pweave
-(setq auto-mode-alist (append (list (cons "\\.Plw$" 'LaTeX-mode))
-                   auto-mode-alist))
+;; (setq auto-mode-alist (append (list (cons "\\.Plw$" 'LaTeX-mode))
+;;                    auto-mode-alist))
+
+
 
 ;; (defun latex ()
 ;;   (interactive)
@@ -123,6 +126,8 @@ Delimiters are paired characters:
 ;;(add-hook 'bibtex-mode-hook 'flyspell-mode)
 
 (setq ispell-local-dictionary "castellano")
+
+;;(setq ispell-personal-dictionary (concat "~/.aspell." lang ".pws"))
 
 ;;'(LaTeX-math-abbrev-prefix (kbd ":"))
 

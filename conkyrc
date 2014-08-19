@@ -1,24 +1,37 @@
 background yes
-font FreeSans:style=bold:size=11
-xftfont FreeSans:style=bold:size=11
+
+#font FreeSans:style=bold:size=11
 use_xft yes
+#xftfont FreeSans:style=bold:size=11
+xftfont Ubuntu:style=bold:size=14
+#draw_shades no
+#draw_outline no
+#draw_borders no
 own_window yes
 own_window_transparent yes
 own_window_type override
-on_bottom yes
-#own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+#own_window_colour gray
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 minimum_size 220 400
-maximum_width 400
+maximum_width 450
 default_color d7d7d7
 #default_outline_color black
 alignment top_left
 double_buffer yes
+#update_interval 60 
+text_buffer_size 1500
 
 TEXT
 #${execp ./org-conky-parser.scm 30}
 #${exec emacs -batch -l ~/.emacs -eval '(org-batch-agenda "a" \
 			 org-agenda-span (quote day))' 2> /dev/null}
-${exec cat ~/Org/agenda}
+#${exec ~/bin/add_quote}
+
+${execp cat ~/Org/agenda}
+
+# Parse command output at a regular interval
+#${execpi 60 ~/bin/agenda_export.sh}
 
 ${if_match ${battery_percent BAT1} <= 8}${if_match ${battery_percent BAT1} > 5}${execi 200 urxvtc -e ~/bin/warn-shutdown}${endif}${endif}
 ${if_match ${battery_percent BAT1} <= 5}${execi 200 urxvtc -e ~/bin/shutdown-now}${endif}
+

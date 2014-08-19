@@ -71,23 +71,23 @@
 ;;(global-set-key (kbd "C-;") 'isearch-forward)
 ;;(define-key isearch-mode-map (kbd "C-;") 'isearch-repeat-forward)
 
-(defun en-us-keymap ()
-  (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
-  (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
+;; (defun en-us-keymap ()
+;;   (local-set-key (kbd "9") '(lambda () (interactive) (insert "(")))
+;;   (local-set-key (kbd "0") '(lambda () (interactive) (insert ")")))
 
-  (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
-  (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
-)
+;;   (local-set-key (kbd "(") '(lambda () (interactive) (insert "9")))
+;;   (local-set-key (kbd ")") '(lambda () (interactive) (insert "0")))
+;; )
 
-(defun es-latam-keymap ()
-  (local-set-key (kbd "8") '(lambda () (interactive) (insert "(")))
-  (local-set-key (kbd "9") '(lambda () (interactive) (insert ")")))
+;; (defun es-latam-keymap ()
+;;   (local-set-key (kbd "8") '(lambda () (interactive) (insert "(")))
+;;   (local-set-key (kbd "9") '(lambda () (interactive) (insert ")")))
 
-  (local-set-key (kbd "(") '(lambda () (interactive) (insert "8")))
-  (local-set-key (kbd ")") '(lambda () (interactive) (insert "9")))
-)
+;;   (local-set-key (kbd "(") '(lambda () (interactive) (insert "8")))
+;;   (local-set-key (kbd ")") '(lambda () (interactive) (insert "9")))
+;; )
 
-(add-hook 'emacs-lisp-mode-hook 'es-latam-keymap)
+;; (add-hook 'emacs-lisp-mode-hook 'es-latam-keymap)
 
 ;;}}}
 
@@ -98,6 +98,9 @@
 
 ;; Save all backup files in a directory
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+
+(global-auto-revert-mode 1)
+(setq auto-revert-verbose nil)
 
 ;; Conflicts with ebib
 ;;

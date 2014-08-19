@@ -10,16 +10,18 @@ user_pref('network.proxy.type', 0);
 
 function toggle_socks() {
     var pref = get_pref("network.proxy.type");
-    
+
     if (pref == 0) {
-	session_pref('network.proxy.type', 1);
+	    session_pref('network.proxy.type', 1);
         clear_cookies();
+        cwd = make_file("~/Downloads/Papers");
 
         var cmd_str = 'urxvtc -e ~/bin/icn';
         shell_command_blind(cmd_str);
     }
     else {
-	session_pref('network.proxy.type', 0);
+	    session_pref('network.proxy.type', 0);
+        cwd = make_file("~/Downloads");
     }
 }
 

@@ -14,6 +14,9 @@ set shiftwidth=4
 set incsearch
 set autoread
 
+" Yank to the X Window System clipboard
+set clipboard=unnamedplus
+
 set ignorecase
 syntax enable
 set encoding=utf8

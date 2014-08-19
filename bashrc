@@ -21,13 +21,13 @@ trap 'echo -ne "\e[0m"' DEBUG
 
 alias units='units -1 -s -q'
 
-#alias setxkblatam='setxkbmap latam -option 'caps:super' -option 'numpad:mac''
-alias setxkbes='setxkbmap es -option 'caps:super' && xmodmap -e "keycode 66 = Shift_L NoSymbol Shift_L"'
-alias setxkbus='setxkbmap us -option 'caps:super' && xmodmap -e "keycode 66 = Shift_L NoSymbol Shift_L"'
+alias setxkblatam='setxkbmap latam -option 'caps:super' -option 'numpad:mac''
 
 alias tcmount='truecrypt --mount ~/Personal/archivero_fiscal /media/truecrypt1 && cd /media/truecrypt1'
-
 alias tcunmount='truecrypt --dismount /media/truecrypt1'
+
+alias ftpmount='curlftpfs 192.168.100.5:2121 ~/WellFTP && cd ~/WellFTP'
+alias ftpunmount='fusermount -u ~/WellFTP'
 
 alias sympy='isympy -Iq'
 alias pylab='ipython2 --no-banner --pylab'
@@ -77,12 +77,14 @@ alias emacsd='(emacs --daemon &)'
 
 # {{{ Environment variables
 
-export EDITOR="gedit"
+#export EDITOR="(if [[ -n $DISPLAY ]]; then echo 'gedit'; else echo 'vim'; fi)"
+export EDITOR='vim'
+export VISUAL='gedit'
 
 #export PATH="/home/marduk/anaconda/bin":$PATH
 
 export PATH="/home/marduk/bin":$PATH
-export PATH=$PATH:"/usr/local/texlive/2013/bin/x86_64-linux"
+export PATH=$PATH:"/usr/local/texlive/2014/bin/x86_64-linux"
 
 # This will source environment variables for gpg daemon 
 #if [ -f "${HOME}/.gnupg/gpg-agent.env" ]; then 
@@ -168,7 +170,8 @@ loc8() {
            break
         fi
 
-        open "$(find $base_dir -iname "$opt")" &> /dev/null    
+        open "$(find $base_dir -iname "$opt")" &#> /dev/null    
+        export TMOUT=1
         break
         read -p "Choose [e]dit, [o]pen , [p]arent, [v]isit:" -s var_option
 	
@@ -223,7 +226,7 @@ zathura () { /usr/bin/zathura "$(realpath "$1")"; }
 
 lnabs () { /usr/bin/ln -s "$(realpath "$1")" "$2"; }
 
-timer() { /usr/bin/utimer -c "$1" && mplayer /usr/share/sounds/freedesktop/stereo/complete.oga; }
+timer() { /usr/bin/utimer -c "$1" && mplayer -quiet -nolirc /usr/share/sounds/freedesktop/stereo/complete.oga; }
 
 # Added by Canopy installer on 2013-07-10
 # VIRTUAL_ENV_DISABLE_PROMPT can be set to '' to make bashprompt show that Canopy is active, otherwise 1

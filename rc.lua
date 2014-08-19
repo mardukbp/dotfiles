@@ -8,7 +8,7 @@ local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
-local naughty = require("naughty")
+--local naughty = require("naughty")
 local menubar = require("menubar")
 
 -- {{{ Error handling
@@ -48,7 +48,8 @@ editor_cmd = terminal .. " -e " .. editor
 mutt = terminal .. " -ls +sb -e mutt"
 emacs = "emacsclient -c"
 pomodoro = "adobe-air /home/marduk/bin/focus_booster.air"
-conkeror = "conkeror"
+-- conkeror = "conkeror"
+firefox = "firefox -P Marduk"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -108,7 +109,7 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-									{ "Firefox", "firefox"},
+									{ "Firefox", "firefox -new-instance -P Maga"},
                                     { "open terminal", terminal }
                                   }
                         })
@@ -224,7 +225,7 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-	awful.key({modkey            }, "w", function() awful.util.spawn(conkeror) end),
+	awful.key({modkey            }, "w", function() awful.util.spawn(firefox) end),
 	awful.key({modkey            }, "r", function() awful.util.spawn(pomodoro) end),
 	awful.key({modkey            }, "e", function() awful.util.spawn(emacs) end),
 	awful.key({}, "Print", function() awful.util.spawn("scrshot.sh", false) end),
