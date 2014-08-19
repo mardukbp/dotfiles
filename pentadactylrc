@@ -1,0 +1,53 @@
+" Toggle proxy settings
+
+:set! network.proxy.socks="localhost"
+:set! network.proxy.socks_port=12345
+
+:command! UseProxy
+   \ -description "Use SOCKS proxy"
+   \ set! network.proxy.type=1
+   \ :sanitize cookies
+   \ :!urxvtc -e ~/bin/icn
+
+command NoProxy -nargs=* :set! network.proxy.type=0
+nmap up :UseProxy<CR>
+nmap np :NoProxy<CR>
+
+" Download settings
+:cd ~/Downloads
+
+" Incremental find
+set incfind
+
+" Highlight previous search pattern matches
+set hlfind
+
+" Search Duck Duck Go by default
+set defsearch=dd
+
+" Faster scrolling
+map -b j 8j
+map -b k 8k
+
+" Accents
+imap \'a á
+imap \'e é
+imap \'i í
+imap \'o ó
+imap \'u ú
+imap ~n ñ
+
+" Go to prev/next page
+set nextpattern='^Next [>»]','^Next »','\bnext\b',^>$,'^(>>|»)$','^(>|»)','(>|»)$','\bmore\b','^Siguiente'
+
+set previouspattern='[<«] Prev$','« Prev$','\bprev(ious)?\b',^<$,'^(<<|«)$','^(<|«)','(<|«)$','Anterior$'
+
+" Use characters for hints
+set hintkeys=asdflkj
+
+hi -a Hint font-size: 12pt !important;
+
+" PrintFriendly
+command -description "Convert to PDF using PrintFriendly" pdf :open printFriendly
+
+" vim: ft=vim
