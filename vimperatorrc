@@ -1,0 +1,80 @@
+" Toolbars
+set toolbars=noaddons,nobookmarks,nomenu,nonavigation
+
+" Statusline
+set status=input,location,tabcount,position,ssl
+
+" Toggle proxy settings
+
+:set! network.proxy.socks="localhost"
+:set! network.proxy.socks_port=12345
+
+command UseProxy -nargs=* :set! network.proxy.type=1
+command NoProxy -nargs=* :set! network.proxy.type=0
+command IIMAS -nargs=* :!urxvtc -e ~/bin/iimas
+nmap up :UseProxy<CR>
+nmap np :NoProxy<CR>
+nmap ii :IIMAS<CR>
+
+" Show proxy indicator
+"source ~/dotfiles/proxy-indicator.js
+
+" Download settings
+":cd ~/Downloads
+
+" Incremental find
+set incsearch
+
+" Focus content after pase has loaded
+set focuscontent
+
+" Highlight previous search pattern matches
+set hlsearch
+
+" Search Duck Duck Go by default
+set defsearch=dd
+
+" Faster scrolling
+"map -b j 8j
+"map -b k 8k
+
+" Accents
+imap \'a á
+imap \'e é
+imap \'i í
+imap \'o ó
+imap \'u ú
+imap ~n ñ
+
+" Go to prev/next page
+set nextpattern='^Next [>»]','^Next »','\bnext\b',^>$,'^(>>|»)$','^(>|»)','(>|»)$','\bmore\b','^Siguiente'
+
+set previouspattern='[<«] Prev$','« Prev$','\bprev(ious)?\b',^<$,'^(<<|«)$','^(<|«)','(<|«)$','Anterior$'
+
+" Use characters for hints
+set hintchars=asdflkj
+
+hi -a Hint font-size: 12pt !important;
+
+" PrintFriendly
+command -description "Convert to PDF using PrintFriendly" pdf :open printFriendly
+
+" Zotero
+
+" Open Zotero
+map zf :js<Space>ZoteroOverlay.toggleDisplay(true)<Return>
+
+" Save page to Zotero
+map zs :js<Space>Zotero_Browser.scrapeThisPage()<Return>
+
+" Show current Zotero collection in statusbar
+source ~/dotfiles/zotero-collection-indicator.js
+
+" Select a collection in Zotero
+source ~/dotfiles/zotero-select-collection.js
+
+map <A-Up> :set toolbars=menu<CR>
+map <A-Down> :set toolbars=nomenu<CR>
+
+map <A-d> :winclose<CR>
+" vim: ft=vim
