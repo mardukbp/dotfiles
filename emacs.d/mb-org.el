@@ -245,7 +245,7 @@
 ;;}}}
 
 ;;{{{ Ebib
-(org-add-link-type "ebib" 'ebib)
+(org-add-link-type "ebib" 'ebib-open-org-link)
 
 (defun org-ebib-link ()
   (interactive)

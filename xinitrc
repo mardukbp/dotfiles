@@ -9,11 +9,11 @@ xinput set-button-map 11 1 2 3 5 4 6 7
 (~/bin/setxkblatam) &
 conky &
 (~/bin/moin/wikiserver.py) &
-(cd ~/Tesis/IPython && ipython2 notebook --pylab=inline --profile=tesis) &
-(cd ~/IPyNb && ipython2 notebook --pylab=inline --profile=default) &
-(cd ~/Julia && ipython notebook --profile julia) &
+#(cd ~/Tesis/IPython && ipython2 notebook --profile=tesis) &
+#(cd ~/IPyNb && ipython2 notebook --profile=default) &
+#(cd ~/Julia && ipython2 notebook --profile julia) &
 (synclient TapButton1=0 && synclient PalmDetect=1) &
-(xbacklight -set 40)&
+(xbacklight -set 10)&
 volumeicon &
 udiskie &
 urxvtd &

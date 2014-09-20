@@ -14,9 +14,9 @@
  '(org-agenda-use-time-grid nil)
  '(org-deadline-warning-days 1)
  '(package-archives (quote (("ELPA" . "http://tromey.com/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/") ("SC" . "http://joseito.republika.pl/sunrise-commander/") ("MELPA" . "http://melpa.milkbox.net/packages/"))))
- '(recentf-mode t)
+ ;;'(recentf-mode t)
  '(sentence-end-double-space nil)
- '(tramp-default-method "ftp")
+ ;;'(tramp-default-method "ftp")
  '(word-wrap t))
 
 (custom-set-faces

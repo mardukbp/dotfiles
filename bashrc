@@ -83,6 +83,7 @@ export VISUAL='gedit'
 
 #export PATH="/home/marduk/anaconda/bin":$PATH
 
+#export PATH="/home/marduk/Downloads/julia/usr/bin":$PATH
 export PATH="/home/marduk/bin":$PATH
 export PATH=$PATH:"/usr/local/texlive/2014/bin/x86_64-linux"
 
@@ -214,6 +215,8 @@ man() {
 	man "$@"
 }
 
+txdoc () { texdoc "$1" && export TMOUT=1; }
+
 cdl () { cd "$1" && ls; }
 encpdf () { pdftk "$1" cat output "$2" user_pw "$3"; }
 pacinfo () { pacman -Qi "$1" | less; }
@@ -231,3 +234,4 @@ timer() { /usr/bin/utimer -c "$1" && mplayer -quiet -nolirc /usr/share/sounds/fr
 # Added by Canopy installer on 2013-07-10
 # VIRTUAL_ENV_DISABLE_PROMPT can be set to '' to make bashprompt show that Canopy is active, otherwise 1
 #VIRTUAL_ENV_DISABLE_PROMPT=1 source /home/marduk/Enthought/Canopy_64bit/User/bin/activate
+

@@ -4,7 +4,7 @@
 
 ;; Add PATH
 (setenv "PATH"
-(concat "/usr/local/texlive/2013/bin/x86_64-linux" ":" (getenv "PATH")))
+(concat "/usr/local/texlive/2014/bin/x86_64-linux" ":" (getenv "PATH")))
 
 ;; Preview LaTeX
 (load "preview-latex.el" nil t t)

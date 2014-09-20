@@ -58,12 +58,13 @@
   mu4e-use-fancy-chars t
 
   mu4e-compose-signature-auto-include nil
-
+  mu4e-completing-read-function 'completing-read
 )
 
 ;;}}}
 
 ;;{{{ bookmarks in main view
+
 ;; ----------------------------
 
 (setq mu4e-bookmarks
@@ -125,7 +126,7 @@
 
 (setq
   mu4e-headers-date-format "%d/%b/%Y %H:%M"
-  mu4e-attachment-dir "~/Downloads/temp"
+  mu4e-attachment-dir "~/"
 )
 
 ;; fields to show in message view

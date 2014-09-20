@@ -1,8 +1,8 @@
 ;;{{{ Auto Complete
 
-(require 'auto-complete)
-(add-hook 'emacs-lisp-mode-hook 'auto-complete-mode)
-(add-hook 'markdown-mode-hook 'auto-complete-mode)
+;; (require 'auto-complete)
+;; (add-hook 'emacs-lisp-mode-hook 'auto-complete-mode)
+;; (add-hook 'markdown-mode-hook 'auto-complete-mode)
 
 ;;}}}
 
@@ -107,111 +107,6 @@
 
 (global-set-key [f3] 'ebib)
 
-;;{{{ Add keyword to entries
-
-(require 'ebib)
-(ebib-key index "y" ebib-add-keyword-entries t)
-
-(defun ebib-add-keyword-entries ()
-  "Add keyword to marked entries"
-  (interactive)
-  (if (ebib-called-with-prefix)
-      (ebib-execute-when
-        ((marked-entries)
-         (let ((minibuffer-local-completion-map `(keymap (keymap (32)) ,@minibuffer-local-completion-map))
-	       (collection (ebib-keywords-for-database ebib-cur-db))
-	       (keywords))
-	   
-	   (setq collections (cons "" collection))
-	   (loop for keyword = (completing-read "Select or enter keyword: " collections nil nil nil 'ebib-keyword-history)
-		 until (string= keyword "")
-		 do (let ((curr-keywords keywords))
-		      (setq keywords (if curr-keywords (concat curr-keywords ebib-keywords-separator keyword) keyword))
-		      (unless (member keyword collection)
-			(ebib-keywords-add-keyword keyword ebib-cur-db))
-		      ))
-
-	   (mapc #'(lambda (entry)
-	   	     (setq ebib-cur-entry-hash (ebib-retrieve-entry entry ebib-cur-db))
-	   	     (ebib-add-keyword-entry keywords))
-	   	  (edb-marked-entries ebib-cur-db))
-	   
-           (message "Keyword added to marked entries.")
-           (ebib-set-modified t)
-	   (setf (edb-marked-entries ebib-cur-db) nil)
-           (ebib-fill-entry-buffer)
-           (ebib-fill-index-buffer)))
-        ((default)
-         (beep)))))
-
-(defun ebib-add-keyword-entry (keyword)
-  (let* ((conts (to-raw (gethash 'keywords ebib-cur-entry-hash)))
-	 (new-conts (if conts
-			(concat conts ebib-keywords-separator keyword)
-		      keyword)))
-    (puthash 'keywords (from-raw (if ebib-keywords-field-keep-sorted
-				     (ebib-sort-keywords new-conts)
-				   new-conts))
-	     ebib-cur-entry-hash)))
-;;}}}
-
-;;{{{ Attach PDF to email
-(defun ebib-attach-file ()
-  "Attach file to gnus/mu4e composition buffer"
-  (interactive)
-
-  (ebib-execute-when
-    ((entries)
-     (let ((filename (to-raw (car (ebib-get-field-value ebib-standard-file-field
-                                                        (edb-cur-entry ebib-cur-db))))))
-       (if filename
-           (ebib-dired-attach filename)
-         (error "Field `%s' is empty" ebib-standard-file-field))))
-    ((default)
-     (beep))))
-
-(defun ebib-dired-attach (file)
-  "Attach FILENAME using gnus-dired-attach."
-  (let ((file-full-path
-            (or (locate-file file ebib-file-search-dirs)
-                (locate-file (file-name-nondirectory file) ebib-file-search-dirs)
-                (expand-file-name file))))
-    (if (file-exists-p file-full-path)
-	(progn
-	  (gnus-dired-attach (cons file-full-path '()))
-	  (ebib-lower))
-      (error "File not found: `%s'" file-full-path))))
-
-;;}}}
-
-;;{{{ Export file
-(defun ebib-export-file (dest)
-  "Export file to a given directory"
-  (interactive (list (read-directory-name "Destination:")))
-
-  (ebib-execute-when
-    ((entries)
-     (let ((filename (to-raw (car (ebib-get-field-value ebib-standard-file-field
-                                                        (edb-cur-entry ebib-cur-db))))))
-       (if filename
-           (ebib-copy-file filename dest)
-         (error "Field `%s' is empty" ebib-standard-file-field))))
-    ((default)
-     (beep))))
-
-(defun ebib-copy-file (file destdir)
-  "Copy FILE to DESTDIR"
-  (let ((file-full-path
-            (or (locate-file file ebib-file-search-dirs)
-                (locate-file (file-name-nondirectory file) ebib-file-search-dirs)
-                (expand-file-name file))))
-    (if (file-exists-p file-full-path)
-	(progn
-	  (shell-command (concat "cp " file-full-path " " "\"" destdir "\""))
-	  )
-      (error "File not found: `%s'" file-full-path))))
-;;}}}
-
 ;;{{{ Config
 
 (setq ebib-filename-separator ":")
@@ -229,23 +124,23 @@
 
 (setq zotero-dir "~/Zotero")
 
-(define-key ebib-index-mode-map "f" (lambda () (interactive) (ebib-view-file 1)))
+;; (define-key ebib-index-mode-map "f" (lambda () (interactive) (ebib-view-file 1)))
 
-(add-to-list 'ebib-file-search-dirs (expand-file-name "arXiv" papers-dir))
+;;(setq ebib-keywords-files-alist '())
+
+(setq ebib-file-associations '(("pdf" . "zathura") ("djvu" . "zathura")))
+
+(setq ebib-preload-bib-files '("~/Library/Artículos/articulos.bib"))
+
+(add-to-list 'ebib-preload-bib-files "~/Library/Tesis/tesis.bib")
+
+(setq ebib-file-search-dirs (expand-file-name "arXiv" papers-dir))
 
 (add-to-list 'ebib-file-search-dirs (expand-file-name "pdf" papers-dir))
 
 (add-to-list 'ebib-file-search-dirs thesis-dir)
 
 (add-to-list 'ebib-file-search-dirs zotero-dir)
-
-(setq ebib-file-associations '(("pdf" . "zathura") ("djvu" . "zathura")))
-
-(setq ebib-preload-bib-files '("~/Library/Artículos/articulos.bib"))
-
-;;(add-to-list 'ebib-preload-bib-files "~/Library/Tesis/tesis.bib")
-
-;;(setq ebib-keywords-files-alist '())
 
 (setq ebib-keywords-file "keywords")
 
@@ -267,147 +162,253 @@
 
 ;;}}}
 
+;;{{{ Add keyword to entries
+
+;; (require 'ebib)
+;; (ebib-key index "y" ebib-add-keyword-entries t)
+
+;; (defun ebib-add-keyword-entries ()
+;;   "Add keyword to marked entries"
+;;   (interactive)
+;;   (if (ebib-called-with-prefix)
+;;       (ebib-execute-when
+;;         ((marked-entries)
+;;          (let ((minibuffer-local-completion-map `(keymap (keymap (32)) ,@minibuffer-local-completion-map))
+;; 	       (collection (ebib-keywords-for-database ebib-cur-db))
+;; 	       (keywords))
+	   
+;; 	   (setq collections (cons "" collection))
+;; 	   (loop for keyword = (completing-read "Select or enter keyword: " collections nil nil nil 'ebib-keyword-history)
+;; 		 until (string= keyword "")
+;; 		 do (let ((curr-keywords keywords))
+;; 		      (setq keywords (if curr-keywords (concat curr-keywords ebib-keywords-separator keyword) keyword))
+;; 		      (unless (member keyword collection)
+;; 			(ebib-keywords-add-keyword keyword ebib-cur-db))
+;; 		      ))
+
+;; 	   (mapc #'(lambda (entry)
+;; 	   	     (setq ebib-cur-entry-hash (ebib-retrieve-entry entry ebib-cur-db))
+;; 	   	     (ebib-add-keyword-entry keywords))
+;; 	   	  (edb-marked-entries ebib-cur-db))
+	   
+;;            (message "Keyword added to marked entries.")
+;;            (ebib-set-modified t)
+;; 	   (setf (edb-marked-entries ebib-cur-db) nil)
+;;            (ebib-fill-entry-buffer)
+;;            (ebib-fill-index-buffer)))
+;;         ((default)
+;;          (beep)))))
+
+;; (defun ebib-add-keyword-entry (keyword)
+;;   (let* ((conts (to-raw (gethash 'keywords ebib-cur-entry-hash)))
+;; 	 (new-conts (if conts
+;; 			(concat conts ebib-keywords-separator keyword)
+;; 		      keyword)))
+;;     (puthash 'keywords (from-raw (if ebib-keywords-field-keep-sorted
+;; 				     (ebib-sort-keywords new-conts)
+;; 				   new-conts))
+;; 	     ebib-cur-entry-hash)))
+;;}}}
+
+;;{{{ Attach PDF to email
+
+;; (defun ebib-attach-file ()
+;;   "Attach file to gnus/mu4e composition buffer"
+;;   (interactive)
+
+;;   (ebib-execute-when
+;;     ((entries)
+;;      (let ((filename (to-raw (car (ebib-get-field-value ebib-standard-file-field
+;;                                                         (edb-cur-entry ebib-cur-db))))))
+;;        (if filename
+;;            (ebib-dired-attach filename)
+;;          (error "Field `%s' is empty" ebib-standard-file-field))))
+;;     ((default)
+;;      (beep))))
+
+;; (defun ebib-dired-attach (file)
+;;   "Attach FILENAME using gnus-dired-attach."
+;;   (let ((file-full-path
+;;             (or (locate-file file ebib-file-search-dirs)
+;;                 (locate-file (file-name-nondirectory file) ebib-file-search-dirs)
+;;                 (expand-file-name file))))
+;;     (if (file-exists-p file-full-path)
+;; 	(progn
+;; 	  (gnus-dired-attach (cons file-full-path '()))
+;; 	  (ebib-lower))
+;;       (error "File not found: `%s'" file-full-path))))
+
+;;}}}
+
+;;{{{ Export file
+;; (defun ebib-export-file (dest)
+;;   "Export file to a given directory"
+;;   (interactive (list (read-directory-name "Destination:")))
+
+;;   (ebib-execute-when
+;;     ((entries)
+;;      (let ((filename (to-raw (car (ebib-get-field-value ebib-standard-file-field
+;;                                                         (edb-cur-entry ebib-cur-db))))))
+;;        (if filename
+;;            (ebib-copy-file filename dest)
+;;          (error "Field `%s' is empty" ebib-standard-file-field))))
+;;     ((default)
+;;      (beep))))
+
+;; (defun ebib-copy-file (file destdir)
+;;   "Copy FILE to DESTDIR"
+;;   (let ((file-full-path
+;;             (or (locate-file file ebib-file-search-dirs)
+;;                 (locate-file (file-name-nondirectory file) ebib-file-search-dirs)
+;;                 (expand-file-name file))))
+;;     (if (file-exists-p file-full-path)
+;; 	(progn
+;; 	  (shell-command (concat "cp " file-full-path " " "\"" destdir "\""))
+;; 	  )
+;;       (error "File not found: `%s'" file-full-path))))
+;;}}}
+
 ;;{{{ Filter recently added entries
 
-(defun ebib-filter-n-days (n)
-  "Filter entries added in the last n days"
+;; (defun ebib-filter-n-days (n)
+;;   "Filter entries added in the last n days"
   
-  (let* ((field (intern-soft "timestamp"))
-	 (day-of-year (string-to-number (format-time-string "%j")))
-	 (n-days-ago (- day-of-year (- n 1)))
-	 (days-between (number-sequence n-days-ago day-of-year))
-	 (regexp-days-between (mapconcat #'(lambda (x)
-					     (concat "\\(" (number-to-string x) "d\\)"))
-					  days-between "\\|")))
+;;   (let* ((field (intern-soft "timestamp"))
+;; 	 (day-of-year (string-to-number (format-time-string "%j")))
+;; 	 (n-days-ago (- day-of-year (- n 1)))
+;; 	 (days-between (number-sequence n-days-ago day-of-year))
+;; 	 (regexp-days-between (mapconcat #'(lambda (x)
+;; 					     (concat "\\(" (number-to-string x) "d\\)"))
+;; 					  days-between "\\|")))
 
-    (ebib-execute-when
-      ((real-db)
-       (setf (edb-filter ebib-cur-db) `(contains ,field ,regexp-days-between))
-       (ebib-redisplay)))
-))
+;;     (ebib-execute-when
+;;       ((real-db)
+;;        (setf (edb-filter ebib-cur-db) `(contains ,field ,regexp-days-between))
+;;        (ebib-redisplay)))
+;; ))
 
-(defun ebib-filter-added-nth (key)
-  (interactive (list (if (featurep 'xemacs)
-                         (event-key last-command-event)
-                       last-command-event)))
-  (ebib-filter-n-days (- (if (featurep 'xemacs)
-			     (char-to-int key)
-			   key) 48)))
+;; (defun ebib-filter-added-nth (key)
+;;   (interactive (list (if (featurep 'xemacs)
+;;                          (event-key last-command-event)
+;;                        last-command-event)))
+;;   (ebib-filter-n-days (- (if (featurep 'xemacs)
+;; 			     (char-to-int key)
+;; 			   key) 48)))
 
-(mapc #'(lambda (key)
-          (define-key ebib-filters-map (format "%d" key)
-            'ebib-filter-added-nth))
-       '(1 2 3 4 5 6 7 8 9))
+;; (mapc #'(lambda (key)
+;;           (define-key ebib-filters-map (format "%d" key)
+;;             'ebib-filter-added-nth))
+;;        '(1 2 3 4 5 6 7 8 9))
 
 ;;}}}
 
 ;;{{{ Filters
 
 ;; Pretty printing lib
-(require 'pp)
+;; (require 'pp)
 
 ;; Associative list for filters
-(defvar filters-alist())
+;; (defvar filters-alist())
 
-(defvar filters-already-loaded nil)
+;; (defvar filters-already-loaded nil)
 
-(setq filter-ignore-case t)
+;; (setq filter-ignore-case t)
 
-(setq filter-default-file "~/Library/Artículos/filters")
+;; (setq filter-default-file "~/Library/Artículos/filters")
 
 ;;{{{ Load filters
 
 ;; Get filters list from buffer
-(defun filters-alist-from-buffer ()
-  "Return a `filters-alist' from the current buffer.
-The buffer must of course contain filter format information.
-Does not care from where in the buffer it is called, and does not
-affect point."
-  (save-excursion
-    (goto-char (point-min))
-    (if (search-forward "(" nil t)
-	(progn
-	  (forward-char -1)
-          (read (current-buffer)))
-      ;; Else no hope of getting information here.
-      (error "Not filter format"))))
+;; (defun filters-alist-from-buffer ()
+;;   "Return a `filters-alist' from the current buffer.
+;; The buffer must of course contain filter format information.
+;; Does not care from where in the buffer it is called, and does not
+;; affect point."
+;;   (save-excursion
+;;     (goto-char (point-min))
+;;     (if (search-forward "(" nil t)
+;; 	(progn
+;; 	  (forward-char -1)
+;;           (read (current-buffer)))
+;;       ;; Else no hope of getting information here.
+;;       (error "Not filter format"))))
 
 
-;; Load filters-alist
-(defun filter-load (file &optional overwrite no-msg)
-  "Load filters from FILE (which must be in filters format).
-Appends loaded filters to the front of the list of filters.  If
-optional second argument OVERWRITE is non-nil, existing filters
-are destroyed. Optional third arg NO-MSG means don't display any
-messages while loading."
+;; ;; Load filters-alist
+;; (defun filter-load (file &optional overwrite no-msg)
+;;   "Load filters from FILE (which must be in filters format).
+;; Appends loaded filters to the front of the list of filters.  If
+;; optional second argument OVERWRITE is non-nil, existing filters
+;; are destroyed. Optional third arg NO-MSG means don't display any
+;; messages while loading."
 
-  (setq file (abbreviate-file-name (expand-file-name file)))
-  (if (not (file-readable-p file))
-      (error "Cannot read filters file %s" file)
-    (if (null no-msg)
-        (message "Loading filters from %s..." file))
+;;   (setq file (abbreviate-file-name (expand-file-name file)))
+;;   (if (not (file-readable-p file))
+;;       (error "Cannot read filters file %s" file)
+;;     (if (null no-msg)
+;;         (message "Loading filters from %s..." file))
     
-    (with-current-buffer (let ((enable-local-variables nil))
-                           (find-file-noselect file))
-      (goto-char (point-min))
+;;     (with-current-buffer (let ((enable-local-variables nil))
+;;                            (find-file-noselect file))
+;;       (goto-char (point-min))
 
-      (let ((flist (filters-alist-from-buffer)))
-        (if (listp flist)
-            (progn
-              (if overwrite
-                  (progn
-                    (setq filters-alist flist))
-            ))
+;;       (let ((flist (filters-alist-from-buffer)))
+;;         (if (listp flist)
+;;             (progn
+;;               (if overwrite
+;;                   (progn
+;;                     (setq filters-alist flist))
+;;             ))
 
-          (error "Invalid filter list in %s" file))
-      (kill-buffer (current-buffer)))
-      (if (null no-msg)
-         (message "Loading filters from %s...done" file))
-    )))
+;;           (error "Invalid filter list in %s" file))
+;;       (kill-buffer (current-buffer)))
+;;       (if (null no-msg)
+;;          (message "Loading filters from %s...done" file))
+;;     )))
 
 
-;; Load filters file
-(defun filter-maybe-load-default-file ()
-  "If filters have not been loaded from the default place, load them."
-  (interactive)
-  (and (not filters-already-loaded)
-       (null filters-alist)
-       (file-readable-p filter-default-file)
+;; ;; Load filters file
+;; (defun filter-maybe-load-default-file ()
+;;   "If filters have not been loaded from the default place, load them."
+;;   (interactive)
+;;   (and (not filters-already-loaded)
+;;        (null filters-alist)
+;;        (file-readable-p filter-default-file)
 
-       (filter-load filter-default-file t nil)
-       (setq filters-already-loaded t)))
+;;        (filter-load filter-default-file t nil)
+;;        (setq filters-already-loaded t)))
 
 ;;}}}
 
 ;;{{{ Get filter
 
-(defun filter-get-filter (filter-name &optional noerror)
-  "Return the filter record corresponding to FILTER-NAME.
-If FILTER-NAME is a string, look for the corresponding
-filter record in `filters-alist'; return it if found, otherwise
-error."
-  (cond
-   ((stringp filter-name)
-    (or (assoc-string filter-name filters-alist
-                      filter-ignore-case)
-        (unless noerror (error "Invalid filter %s" filter-name))))))
+;; (defun filter-get-filter (filter-name &optional noerror)
+;;   "Return the filter record corresponding to FILTER-NAME.
+;; If FILTER-NAME is a string, look for the corresponding
+;; filter record in `filters-alist'; return it if found, otherwise
+;; error."
+;;   (cond
+;;    ((stringp filter-name)
+;;     (or (assoc-string filter-name filters-alist
+;;                       filter-ignore-case)
+;;         (unless noerror (error "Invalid filter %s" filter-name))))))
 
-;; Sort filters
-(defun filter-sort-alist ()
-  "Return `filters-alist' for display."
-  (interactive)
-  (progn
-    (sort (copy-alist filters-alist)
-	  (function
-	   (lambda (x y) (string-lessp (car x) (car y))))) 
-    ))
+;; ;; Sort filters
+;; (defun filter-sort-alist ()
+;;   "Return `filters-alist' for display."
+;;   (interactive)
+;;   (progn
+;;     (sort (copy-alist filters-alist)
+;; 	  (function
+;; 	   (lambda (x y) (string-lessp (car x) (car y))))) 
+;;     ))
 
 ;;}}}
 
 ;;{{{ Rename filter
-(defun filter-set-name (filter-name newname)
-  "Set filter's name to NEWNAME."
-  (setcar (filter-get-filter filter-name) newname))
+;; (defun filter-set-name (filter-name newname)
+;;   "Set filter's name to NEWNAME."
+;;   (setcar (filter-get-filter filter-name) newname))
 
 ;; (defun ebib-rename-filter ()
 ;;   (interactive)
@@ -452,53 +453,53 @@ error."
 ;;{{{ Add filter to alist
 
 ;; Check for dups and store filter
-(defun filter-store (name alist no-overwrite)
-  "Store the filter NAME with data ALIST.
-If NO-OVERWRITE is non-nil and another filter of the same name
-already exists in `filter-alist', record the new filter without
-throwing away the old one."
-  (interactive)
-  (filter-maybe-load-default-file)
-    (if (and (not no-overwrite)
-           (filter-get-filter name 'noerror))
-      ;; already existing filter under that name and
-      ;; no prefix arg means just overwrite old filter
-      ;; Use the new (NAME . ALIST) format.
-      (setcdr (filter-get-filter name) (cons alist '()))
+;; (defun filter-store (name alist no-overwrite)
+;;   "Store the filter NAME with data ALIST.
+;; If NO-OVERWRITE is non-nil and another filter of the same name
+;; already exists in `filter-alist', record the new filter without
+;; throwing away the old one."
+;;   (interactive)
+;;   (filter-maybe-load-default-file)
+;;     (if (and (not no-overwrite)
+;;            (filter-get-filter name 'noerror))
+;;       ;; already existing filter under that name and
+;;       ;; no prefix arg means just overwrite old filter
+;;       ;; Use the new (NAME . ALIST) format.
+;;       (setcdr (filter-get-filter name) (cons alist '()))
 
-    ;; otherwise just cons it onto the front (either the filter
-    ;; doesn't exist already, or there is no prefix arg.  In either
-    ;; case, we want the new filter consed onto the alist...)
-    (push (cons name (cons alist '())) filters-alist))
-)
+;;     ;; otherwise just cons it onto the front (either the filter
+;;     ;; doesn't exist already, or there is no prefix arg.  In either
+;;     ;; case, we want the new filter consed onto the alist...)
+;;     (push (cons name (cons alist '())) filters-alist))
+;; )
 
 ;;}}}
 
 ;;{{{ Save filters
 
-(defun filter-write-file ()
-  "Write `filters-alist' to FILTER-DEFAULT-FILE."
-  (interactive)
-  (message "Saving filters to file %s..." filter-default-file)
-  (with-current-buffer (get-buffer-create " *Filters*")
-    (goto-char (point-min))
-    (delete-region (point-min) (point-max))
-    (let ((print-length nil)
-          (print-level nil)
-          (print-circle t))
-      ;;(filter-insert-header)
+;; (defun filter-write-file ()
+;;   "Write `filters-alist' to FILTER-DEFAULT-FILE."
+;;   (interactive)
+;;   (message "Saving filters to file %s..." filter-default-file)
+;;   (with-current-buffer (get-buffer-create " *Filters*")
+;;     (goto-char (point-min))
+;;     (delete-region (point-min) (point-max))
+;;     (let ((print-length nil)
+;;           (print-level nil)
+;;           (print-circle t))
+;;       ;;(filter-insert-header)
       
-      (insert "(")
-      (dolist (i filters-alist) (pp i (current-buffer)))
-      (insert ")")
+;;       (insert "(")
+;;       (dolist (i filters-alist) (pp i (current-buffer)))
+;;       (insert ")")
 
-      (condition-case nil
-	  (write-region (point-min) (point-max) filter-default-file)
-	(file-error (message "Can't write %s" filter-default-file)))
+;;       (condition-case nil
+;; 	  (write-region (point-min) (point-max) filter-default-file)
+;; 	(file-error (message "Can't write %s" filter-default-file)))
       
-      (kill-buffer (current-buffer))
-      (message "Saving filters to file %s...done" filter-default-file)
-)))
+;;       (kill-buffer (current-buffer))
+;;       (message "Saving filters to file %s...done" filter-default-file)
+;; )))
 
 ;;}}}
 
@@ -536,15 +537,15 @@ throwing away the old one."
 ;;}}}
 
 ;;{{{ Show saved filters
-(defun filter-name-from-full-record (filter-record)
-  "Return the name of FILTER-RECORD. FILTER-RECORD is, e.g.,
-one element from `filters-alist'."
-  (car filter-record))
+;; (defun filter-name-from-full-record (filter-record)
+;;   "Return the name of FILTER-RECORD. FILTER-RECORD is, e.g.,
+;; one element from `filters-alist'."
+;;   (car filter-record))
 
-(defun filter-all-names ()
-  "Return a list of all current filter names."
-  (filter-maybe-load-default-file)
-  (mapcar 'filter-name-from-full-record (filter-sort-alist)))
+;; (defun filter-all-names ()
+;;   "Return a list of all current filter names."
+;;   (filter-maybe-load-default-file)
+;;   (mapcar 'filter-name-from-full-record (filter-sort-alist)))
 
 ;;}}}
 
@@ -626,71 +627,71 @@ one element from `filters-alist'."
 
 ;;{{{ Import bibtex entry from conkeror
 
-(setq arxiv-dir "~/Library/Artículos/arXiv/")
+;; (setq arxiv-dir "~/Library/Artículos/arXiv/")
 
-(defun ebib-import-arxiv (arxiv-url)
-  (interactive)
+;; (defun ebib-import-arxiv (arxiv-url)
+;;   (interactive)
 
-  (let ((tempbuff (get-buffer-create "*arxiv*"))
-	(arxiv-id (car (cdr (split-string arxiv-url "abs/"))))
-	(arxiv-pdf-url (concat (replace-regexp-in-string "abs" "pdf" arxiv-url) ".pdf")))
+;;   (let ((tempbuff (get-buffer-create "*arxiv*"))
+;; 	(arxiv-id (car (cdr (split-string arxiv-url "abs/"))))
+;; 	(arxiv-pdf-url (concat (replace-regexp-in-string "abs" "pdf" arxiv-url) ".pdf")))
   
-    (call-process-shell-command "arxiv2bib.py" nil tempbuff nil arxiv-id)
+;;     (call-process-shell-command "arxiv2bib.py" nil tempbuff nil arxiv-id)
 
-    (setq arxiv-id (replace-regexp-in-string "/" "_" arxiv-id))
+;;     (setq arxiv-id (replace-regexp-in-string "/" "_" arxiv-id))
 
-    (call-process-shell-command "links" nil nil nil
-				"-source" arxiv-pdf-url "> " (concat arxiv-dir arxiv-id ".pdf"))
+;;     (call-process-shell-command "links" nil nil nil
+;; 				"-source" arxiv-pdf-url "> " (concat arxiv-dir arxiv-id ".pdf"))
 
-    (with-current-buffer tempbuff
-      (ebib-import)
-      (kill-buffer (current-buffer))
-)))
+;;     (with-current-buffer tempbuff
+;;       (ebib-import)
+;;       (kill-buffer (current-buffer))
+;; )))
 
-(require 'mm-url)
+;; (require 'mm-url)
 
-(defun ebib-import-bibtex (url filename)
-  (interactive)
+;; (defun ebib-import-bibtex (url filename)
+;;   (interactive)
 
-  (let ((tempbuff (get-buffer-create "*bibtex*")))  
-    (with-current-buffer tempbuff
-      (mm-url-insert-file-contents url)
+;;   (let ((tempbuff (get-buffer-create "*bibtex*")))  
+;;     (with-current-buffer tempbuff
+;;       (mm-url-insert-file-contents url)
       
-      ;; Fix syntactically incorrect BibTeX entry
-      ;; ==========================================
+;;       ;; Fix syntactically incorrect BibTeX entry
+;;       ;; ==========================================
       
-      ;; from EJPD
-      (setq bibtex-key filename)
+;;       ;; from EJPD
+;;       (setq bibtex-key filename)
 
-      (while (search-forward "@article{\n" nil t)
-	(replace-match (concat "@article{" bibtex-key ",\n") nil t))
+;;       (while (search-forward "@article{\n" nil t)
+;; 	(replace-match (concat "@article{" bibtex-key ",\n") nil t))
 
-      ;; from AIP
-      (while (search-forward "eid = ," nil t)
-	(replace-match "eid = \"\"," nil t))
+;;       ;; from AIP
+;;       (while (search-forward "eid = ," nil t)
+;; 	(replace-match "eid = \"\"," nil t))
 
-      ;; Add file field
-      ;; ===============
+;;       ;; Add file field
+;;       ;; ===============
 
-      (while (search-forward "\n}" nil t)
-	(replace-match (concat ",\n  file = {" filename ".pdf}\n}") nil t))
+;;       (while (search-forward "\n}" nil t)
+;; 	(replace-match (concat ",\n  file = {" filename ".pdf}\n}") nil t))
       
-      (ebib-import)
-      (kill-buffer (current-buffer))
-    ) 
-))
+;;       (ebib-import)
+;;       (kill-buffer (current-buffer))
+;;     ) 
+;; ))
 
 ;;}}}
 
 ;;{{{ Insert current entry key as filename
-(defun fileaskey()
-(concat (ebib-cur-entry-key) ".pdf"))
+;; (defun fileaskey()
+;; (concat (ebib-cur-entry-key) ".pdf"))
 
-;; Insert current entry key as file name
-(global-set-key (kbd "C-c v") 
-		(lambda () 
-		  (interactive) 
-		  (insert (concat (ebib-cur-entry-key) ".pdf"))))
+;; ;; Insert current entry key as file name
+;; (global-set-key (kbd "C-c v") 
+;; 		(lambda () 
+;; 		  (interactive) 
+;; 		  (insert (concat (ebib-cur-entry-key) ".pdf"))))
 
 ;;}}}
 
@@ -705,7 +706,11 @@ one element from `filters-alist'."
 (setq elfeed-feeds
       '(("http://feeds.aps.org/rss/recent/pra.xml" pra)
 	("http://feeds.aps.org/rss/recent/prl.xml" prl)
+	("http://export.arxiv.org/rss/quant-ph" quant-ph) 
+	("https://api.zotero.org/users/856974/items?key=doRLHGWq1Qe2a0mLW2Cz1F0H" zotero)
+       ;("file:///home/marduk/zotero.xml" zotero)
 ))
+
 
 (define-key elfeed-search-mode-map "U" 'elfeed-update)
 
@@ -714,9 +719,12 @@ one element from `filters-alist'."
 
 (defadvice elfeed-search-update (before nullprogram activate)
   (let ((pra (elfeed-db-get-feed "http://feeds.aps.org/rss/recent/pra.xml"))
-	(prl (elfeed-db-get-feed "http://feeds.aps.org/rss/recent/prl.xml")))
+	(prl (elfeed-db-get-feed "http://feeds.aps.org/rss/recent/prl.xml"))
+	(quant-ph (elfeed-db-get-feed "http://export.arxiv.org/rss/quant-ph"))
+	)
     (setf (elfeed-feed-title pra) "")
     (setf (elfeed-feed-title prl) "")
+    (setf (elfeed-feed-title quant-ph) "")
 ))
 
 (add-hook 'elfeed-new-entry-hook
@@ -727,6 +735,10 @@ one element from `filters-alist'."
           (elfeed-make-tagger :entry-title "dissipat"
                               :add 'dissipat))
 
+(add-hook 'elfeed-new-entry-hook
+          (elfeed-make-tagger :entry-title "open quantum"
+                              :add 'OQS))
+
 
 ;; http://nullprogram.com/blog/2013/11/26/
 (defvar my-elfeed-counter 0)
@@ -735,8 +747,14 @@ one element from `filters-alist'."
   (let ((filters
 	 '(
 	   "@4-weeks-ago +unread"
-	   "@4-weeks-ago +unread entangle"
-	   "@4-weeks-ago +unread dissipati"
+	   "@4-weeks-ago +entangle"
+	   "@4-weeks-ago +dissipat"
+	   "@4-weeks-ago +OQS"
+	   "@4-weeks-ago rydberg"
+	   "@4-weeks-ago superradiance"
+	   "@4-weeks-ago markov"
+	   "@4-weeks-ago correlations"
+	   "@4-weeks-ago +zotero"
 	   ))
 	)
     (setq current-counter (+ my-elfeed-counter 1))
@@ -787,38 +805,40 @@ one element from `filters-alist'."
 
 ;;{{{ Helm
 
-(require 'helm-config)
-(helm-mode 1)
+;; (require 'helm-config)
+;; (helm-mode 1)
 
-;; (eval-after-load 'helm
-;;   '(define-key helm-map (kbd "6") '(lambda () (interactive) (insert "^"))))
+;; ;; (eval-after-load 'helm
+;; ;;   '(define-key helm-map (kbd "6") '(lambda () (interactive) (insert "^"))))
 
-;; Disable helm for this commands
-(add-to-list 'helm-completing-read-handlers-alist '(dired-create-directory . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(dired . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(find-file . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(mu4e-view-save-attachment . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(LaTeX-environment . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(LaTeX-section . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(bbdb-create . nil))
-(add-to-list 'helm-completing-read-handlers-alist '(TeX-insert-macro . nil))
+;; ;; Disable helm for this commands
+;; (add-to-list 'helm-completing-read-handlers-alist '(dired-create-directory . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(dired . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(find-file . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(ido-write-file . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(mu4e-view-save-attachment-single . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(mu4e-view-save-attachment . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(LaTeX-environment . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(LaTeX-section . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(bbdb-create . nil))
+;; (add-to-list 'helm-completing-read-handlers-alist '(TeX-insert-macro . nil))
 
-(global-set-key (kbd "C-SPC")
-  (lambda() (interactive)
-    (helm
-     :prompt "Switch to: "
-     :candidate-number-limit 10                  ;; up to 10 of each 
-     :sources
-     '( helm-c-source-buffers-list               ;; buffers 
-        ;anything-c-source-recentf               ;; recent files 
-        helm-c-source-bookmarks                  ;; bookmarks
-        ;anything-c-source-files-in-current-dir+ ;; current dir
-      )
-    )
-  )
-)
+;; (global-set-key (kbd "C-SPC")
+;;   (lambda() (interactive)
+;;     (helm
+;;      :prompt "Switch to: "
+;;      :candidate-number-limit 10                  ;; up to 10 of each 
+;;      :sources
+;;      '( helm-c-source-buffers-list               ;; buffers 
+;;         ;anything-c-source-recentf               ;; recent files 
+;;         helm-c-source-bookmarks                  ;; bookmarks
+;;         ;anything-c-source-files-in-current-dir+ ;; current dir
+;;       )
+;;     )
+;;   )
+;; )
 
 ;;}}}
 
@@ -842,53 +862,53 @@ one element from `filters-alist'."
 
 ;;{{{ Interactive do Mode
 
-(ido-mode t)
-(ido-everywhere t)
-(add-hook 'ido-setup-hook 'ido-my-keys)
-(setq ido-max-prospects 6           ; limit search results
-      ido-case-fold t               ; case insensitive
-      ido-use-filename-at-point nil
-      ido-use-url-at-point nil
-      ido-auto-merge-work-directories-length 0
-      ido-enable-flex-matching t    ; match characters in the given sequence
-)
+;(ido-mode t)
+;(ido-everywhere t)
+;(add-hook 'ido-setup-hook 'ido-my-keys)
+;; (setq ido-max-prospects 6           limit search results
+;;       ido-case-fold t               case insensitive
+;;       ido-use-filename-at-point nil
+;;       ido-use-url-at-point nil
+;;       ido-auto-merge-work-directories-length 0
+;;       ido-enable-flex-matching t    match characters in the given sequence
+;; )
 
-(defun ido-my-keys ()
-  ;;(define-key ido-completion-map (kbd "C-d") 'ido-enter-dired)
-  (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
-  (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
-)
+;; (defun ido-my-keys ()
+;;   ;;(define-key ido-completion-map (kbd "C-d") 'ido-enter-dired)
+;;   (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+;;   (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
+;; )
 
 ;;{{{ recent stuff
 
 ;; --------------
-(require 'recentf)
-(recentf-mode t)
-(setq recentf-max-saved-items 20)
+;; (require 'recentf)
+;; (recentf-mode t)
+;; (setq recentf-max-saved-items 20)
 
-(add-to-list 'recentf-exclude "*.archnovo*")
-(add-to-list 'recentf-exclude ".ido.last")
+;; (add-to-list 'recentf-exclude "*.archnovo*")
+;; (add-to-list 'recentf-exclude ".ido.last")
 
-(defun recentf-ido-find-file ()
-  "Find a recent file using Ido."
-  (interactive)
-  (let* ((file-assoc-list
-	  (mapcar (lambda (x)
-		    (cons (file-name-nondirectory x)
-			  x))
-		  recentf-list))
-	 (filename-list
-	  (remove-duplicates (mapcar #'car file-assoc-list)
-			     :test #'string=))
-	 (filename (ido-completing-read "Choose recent file: "
-					filename-list
-					nil
-					t)))
-    (when filename
-      (find-file (cdr (assoc filename
-			     file-assoc-list))))))
+;; (defun recentf-ido-find-file ()
+;;   "Find a recent file using Ido."
+;;   (interactive)
+;;   (let* ((file-assoc-list
+;; 	  (mapcar (lambda (x)
+;; 		    (cons (file-name-nondirectory x)
+;; 			  x))
+;; 		  recentf-list))
+;; 	 (filename-list
+;; 	  (remove-duplicates (mapcar #'car file-assoc-list)
+;; 			     :test #'string=))
+;; 	 (filename (ido-completing-read "Choose recent file: "
+;; 					filename-list
+;; 					nil
+;; 					t)))
+;;     (when filename
+;;       (find-file (cdr (assoc filename
+;; 			     file-assoc-list))))))
 
-(global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)
+;; (global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)
 
 ;;}}}
 
@@ -979,7 +999,7 @@ one element from `filters-alist'."
 ;;}}}
 
 ;;{{{ Nero
-(require 'nero)
+;(require 'nero)
 ;;}}}
 
 ;;{{{ Octave

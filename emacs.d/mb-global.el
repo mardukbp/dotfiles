@@ -32,6 +32,14 @@
 
 ;;}}}
 
+;; Ido Mode
+(require 'ido-vertical-mode)
+(ido-mode t)
+(ido-vertical-mode 1)
+(setq ido-case-fold t)
+
+;(ido-everywhere t) ; unpleasant with mu4e
+
 ;;{{{ Appearance 
 
 ;; Fringe

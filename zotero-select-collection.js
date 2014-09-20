@@ -19,10 +19,11 @@
                 statusline.updateField('zotero-collection',false);
                 //liberator.echo(id_num[1]);
             }, {
-                completer: function(context,arg) {
+                completer: function(context, arg) {
                     context.title = ['Name'];
                     context.completions = coll_name; //array of arrays
                 }
             });
+    //TODO: Add Smart Completion using vimperator/content/config.js 258:298
 
 })();

@@ -1,9 +1,11 @@
-URxvt.perl-ext-common:      default,clipboard,url-picker,keyboard-select,tabbedex
+URxvt.perl-ext-common:      default,clipboard,url-picker,keyboard-select,tabbedex,font-size
 URxvt.urlLauncher:          chromium
 URxvt.url-select.underline: true
 URxvt.keysym.M-u:           perl:url-picker
 URxvt.keysym.M-Escape:      perl:keyboard-select:activate
 URxvt.keysym.M-s:           perl:keyboard-select:search
+URxvt.keysym.C-Up:          perl:font-size:increase
+URxvt.keysym.C-Down:        perl:font-size:decrease
 
 ! to match gnome-terminal "Linux console" scheme
 ! foreground/background

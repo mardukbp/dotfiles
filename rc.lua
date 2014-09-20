@@ -278,7 +278,9 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({modkey            }, "q", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    --awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    --TODO: Use Zenity to ask for confirmation 
+    --http://stackoverflow.com/questions/7607384/getting-return-status-and-program-output
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
