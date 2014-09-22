@@ -58,7 +58,7 @@ c = get_config()
 # platform dependent and determined by the python standard library `webbrowser`
 # module, unless it is overridden using the --browser (NotebookApp.browser)
 # configuration option.
-c.NotebookApp.open_browser = False 
+c.NotebookApp.open_browser = True 
 
 # The full path to an SSL/TLS certificate file.
 # c.NotebookApp.certfile = u''
@@ -473,4 +473,5 @@ c.NotebookApp.open_browser = False
 # c.NotebookManager.save_script = False
 
 # The directory to use for notebooks.
-c.NotebookManager.notebook_dir = u'/home/marduk/Tesis/IPython'
+tesisPath=u'/home/marduk/Profesional/Investigacion/Tesis_Maestria/IPython'
+c.NotebookManager.notebook_dir = tesisPath
