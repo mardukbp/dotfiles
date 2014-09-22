@@ -73,10 +73,10 @@ map zw :js<Space>ZoteroPane.addItemFromPage()<Return>
 
 
 " Show current Zotero collection in statusbar
-source ~/dotfiles/zotero-collection-indicator.js
+source ~/dotfiles/vimperator/zotero-collection-indicator.js
 
 " Select a collection in Zotero
-source ~/dotfiles/zotero-select-collection.js
+source ~/dotfiles/vimperator/zotero-select-collection.js
 
 map <A-Up> :set toolbars=menu<CR>
 map <A-Down> :set toolbars=nomenu<CR>
