@@ -4,3 +4,4 @@ log/
 pid/
 security/
 history.sqlite
+nbextensions/
