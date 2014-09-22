@@ -7,7 +7,7 @@
    \ -description "Use SOCKS proxy"
    \ set! network.proxy.type=1
    \ :sanitize cookies
-   \ :!urxvtc -e ~/bin/icn
+   \ :!urxvtc -e ~/bin/iimas
 
 command NoProxy -nargs=* :set! network.proxy.type=0
 nmap up :UseProxy<CR>
