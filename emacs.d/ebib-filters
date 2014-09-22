@@ -1,11 +1,11 @@
 ;; -*- mode: emacs-lisp -*-
 
 ;; Ebib filters file
-;; Saved on 2014.08.18 17:42
+;; Saved on 2014.09.22 13:09
 
-(("QT+group"
+(("QT"
+  (contains keywords "trajec"))
+ ("QT+group"
   (and
    (contains keywords "trajec")
-   (contains keywords "group")))
- ("QT"
-  (contains keywords "trajec")))
+   (contains keywords "group"))))
