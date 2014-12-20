@@ -11,18 +11,23 @@
 
 (setq-default TeX-master t)
 
-;; Fold mode
-(add-hook 'LaTeX-mode-hook 'TeX-fold-mode)
+(add-hook 'LaTeX-mode-hook
+	  (lambda ()
+	    (turn-on-reftex)
+	    ;;(TeX-fold-mode) ;; Folding mode
+	    (flyspell-mode)
+	    (reftex-isearch-minor-mode t)
+	    (setq reftex-plug-into-AUCTeX t)
+	    (setq TeX-command-force "arara") ;; Ask no questions
+	    ))
 
-(setq default-input-method 'latin-9-prefix)
-(add-hook 'LaTeX-mode-hook 'toggle-input-method)
+
+;(setq default-input-method 'latin-9-prefix)
+;(add-hook 'LaTeX-mode-hook 'toggle-input-method)
 
 ;;{{{ Compile LaTeX
 
 (setq TeX-PDF-mode t)
-
-;; Ask no questions
-(add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-force "arara")))
 
 ;; Support for .Plw
 (eval-after-load "tex"
@@ -61,10 +66,9 @@
 
 ;;{{{ RefTeX
 
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
-(setq reftex-plug-into-auctex t)
-
 (setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresource"))
+
+
 
 ;; source: http://ergoemacs.org/emacs/modernization_mark-word.html
 (defun select-text-in-quote ()
@@ -109,7 +113,7 @@ Delimiters are paired characters:
 				(match-string 1 file)))))
 	(call-process-shell-command "zathura" nil nil nil (concat "\"" name "\"" ))))))
 
-;;}}}
+;;}}}a
 
 ;; Auto-reload document in order to get support for packages
 (setq TeX-auto-save t)
@@ -121,7 +125,7 @@ Delimiters are paired characters:
 ;;(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
 ;; Spellcheck on the fly
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+
 ;;(add-hook 'tex-mode-hook 'flyspell-mode)
 ;;(add-hook 'bibtex-mode-hook 'flyspell-mode)
 
@@ -132,6 +136,7 @@ Delimiters are paired characters:
 ;;'(LaTeX-math-abbrev-prefix (kbd ":"))
 
 ;;{{{ Keymaps
+
 ;; --------
 ;; Revisar APL keymap en Xah Lee
 
@@ -180,7 +185,7 @@ Delimiters are paired characters:
   ;; (local-set-key (kbd "=") '(lambda () (interactive) (insert "0")))
 )
 
-(add-hook 'LaTeX-mode-hook 'TeX-es-latam-kmap)
+;(add-hook 'LaTeX-mode-hook 'TeX-es-latam-kmap)
 
 ;;}}}
 

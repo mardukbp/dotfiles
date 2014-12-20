@@ -47,7 +47,7 @@
   mu4e-mu-home "~/Personal/mail/mu" ;; Where is the index?
   mu4e-maildir "~/Personal/mail/Maildirs" 
   mu4e-get-mail-command "offlineimap" ;; Get mail with S-u
-  ;;mu4e-update-interval 300 ;; update every 5 mins
+  mu4e-update-interval nil ;; update every 5 mins
   
   ;; don't keep message buffers around
   message-kill-buffer-on-exit t
@@ -59,6 +59,7 @@
 
   mu4e-compose-signature-auto-include nil
   mu4e-completing-read-function 'completing-read
+  mu4e-hide-index-messages t
 )
 
 ;;}}}
@@ -136,7 +137,7 @@
 
 (setq
   ;;mu4e-html2text-command "pandoc -f html -t org"
-  ;;mu4e-html2text-command "html2text -width 72"
+  ;;mu4e-html2text-command "html2text --ignore-images"
   mu4e-html2text-command "w3m -dump -T text/html"
 )
 
@@ -208,8 +209,8 @@ Uses ido to select the contact from all those present in the database."
 
 ;;{{{ Composing messages
 
-(setq default-input-method 'latin-1-prefix)
-(add-hook 'mu4e-compose-mode-hook 'toggle-input-method)
+;(setq default-input-method 'latin-1-prefix)
+;(add-hook 'mu4e-compose-mode-hook 'toggle-input-method)
 
 (setq
   ;; limit address autocompletion to messages received since given date

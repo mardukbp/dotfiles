@@ -39,10 +39,10 @@
 ;;(eval-after-load 'dired '(require 'mb-dired))
 (require 'mb-mu4e)
 (require 'mb-extern)
-(require 'mb-python)
-(require 'mb-scicomp)
-(require 'mb-term)
-(eval-after-load 'cc-mode '(require 'mb-c))
+;(require 'mb-python)
+;(require 'mb-scicomp)
+;(require 'mb-term)
+;(eval-after-load 'cc-mode '(require 'mb-c))
 
 ;; LaTeX
 (require 'tex-site)

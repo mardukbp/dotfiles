@@ -42,6 +42,10 @@
 
 ;;{{{ Appearance 
 
+;; Frame (window) title
+
+(setq frame-title-format "%b")
+
 ;; Fringe
 (set-face-background 'fringe "black")
 

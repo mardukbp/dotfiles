@@ -100,6 +100,10 @@
 
 ;;}}}
 
+;;{{{ doconce
+(load-file (expand-file-name "doconce-mode.el" site-lisp-dir))
+;;}}}
+
 ;;{{{ ebib
 ;; https://github.com/joostkremers/ebib
 
@@ -134,7 +138,9 @@
 
 (add-to-list 'ebib-preload-bib-files "~/Library/Tesis/tesis.bib")
 
-(setq ebib-file-search-dirs (expand-file-name "arXiv" papers-dir))
+(setq ebib-file-search-dirs '("~"))
+
+(add-to-list 'ebib-file-search-dirs (expand-file-name "arXiv" papers-dir))
 
 (add-to-list 'ebib-file-search-dirs (expand-file-name "pdf" papers-dir))
 
@@ -763,7 +769,6 @@
 
 (define-key elfeed-search-mode-map "c" 'elfeed-search-filter-toggle)
 
-
 ;;}}}
 
 ;;{{{ Expand region
@@ -1027,8 +1032,9 @@
 ;;{{{ Pandoc-mode
 
 (add-hook 'markdown-mode-hook 'turn-on-pandoc)
-(setq default-input-method 'latin-9-prefix)
-(add-hook 'markdown-mode-hook 'toggle-input-method)
+(add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+;(setq default-input-method 'latin-9-prefix)
+;(add-hook 'markdown-mode-hook 'toggle-input-method)
 
 ;;}}}
 
@@ -1189,7 +1195,7 @@
 
 (add-hook 'sr-mode-hook 'sr-mod-keys)
 
-(global-set-key (kbd "<f1>") 'sunrise)
+;(global-set-key (kbd "<f1>") 'sunrise)
 
 ;;}}}
 

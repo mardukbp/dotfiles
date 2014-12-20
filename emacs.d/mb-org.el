@@ -7,7 +7,7 @@
 (require 'org)
 (require 'org-protocol)
 (require 'org-capture)
-(require 'org-special-blocks)
+; (require 'org-special-blocks) --Missing in emacs 24.4.1
 
 ;; Load org-mode when starting emacs
 ;; (pop-to-buffer (get-buffer-create (generate-new-buffer-name "*scratch-org*")))
@@ -33,8 +33,8 @@
 
 (add-hook 'org-mode-hook 'visual-line-mode)
 
-(setq default-input-method 'latin-1-prefix)
-(add-hook 'org-mode-hook 'toggle-input-method)
+;(setq default-input-method 'latin-1-prefix)
+;(add-hook 'org-mode-hook 'toggle-input-method)
 
 ;;}}}
 
